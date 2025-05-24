@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブiPhoneメール写真添付ガイド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Application Structure Plan: 
+        The SPA is structured with a fixed sidebar navigation for top-level sections of the guide. On mobile, the sidebar stacks on top.
+        The main content area dynamically displays the selected section's content.
+        Key procedures (Method 1, Method 2) are broken down into accordion-style steps for progressive disclosure.
+        Troubleshooting is organized by common problems, also using accordions for solutions.
+        This structure was chosen to make a text-heavy guide more digestible and easier to navigate than a linear document, allowing users to quickly jump to relevant parts and explore steps at their own pace, optimized for various screen sizes.
+    -->
+    <!-- Visualization & Content Choices:
+        - Guide Introduction: Text display. Goal: Inform. Method: Simple HTML. Justification: Direct presentation of introductory text.
+        - Preparations: List format. Goal: Inform. Method: HTML list. Justification: Clear, concise checklist.
+        - Attachment Methods (Method 1 & 2): Accordion for steps. Goal: Organize & Inform. Method: HTML, JS for accordion. Justification: Breaks down complex procedures into manageable, expandable steps. Screenshots are replaced with descriptive text and Unicode icons.
+        - Photo Size Issues: Text sections with accordions for details. Goal: Inform. Method: HTML, JS for accordion. Justification: Explains concepts and solutions clearly.
+        - Troubleshooting: Accordions grouped by problem type. Goal: Organize & Inform. Method: HTML, JS for accordion. Justification: Allows users to quickly find solutions to specific problems. The summary table is converted to an HTML table.
+        - Conclusion: Text display. Goal: Inform. Method: Simple HTML. Justification: Direct presentation of concluding remarks.
+        - Interactions: Click to navigate sections, click to expand/collapse accordions.
+        - Library/Method: Vanilla JavaScript for all interactions. Tailwind CSS for styling.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+            background-color: #f8f9fa; /* Light warm gray background */
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .accordion-content {
+            display: none;
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+        }
+        .accordion-button.active + .accordion-content {
+            display: block;
+        }
+        .sidebar-link.active {
+            background-color: #e9ecef; /* Slightly darker gray for active link */
+            color: #007bff; /* Blue for active link text */
+            font-weight: bold;
+        }
+        .sidebar-link:hover {
+            background-color: #f1f3f5;
+        }
+        .screenshot-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #ced4da;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background-color: #e9ecef;
+            color: #495057;
+            font-style: italic;
+            text-align: center;
+        }
+         .screenshot-placeholder-inline {
+            display: inline-flex;
+            align-items: center;
+            border: 1px dashed #ced4da;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            margin: 0 0.25rem;
+            background-color: #e9ecef;
+            color: #495057;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen bg-slate-50 text-slate-800">
+
+    <aside class="w-full md:w-64 bg-white shadow-md p-4 space-y-2 md:h-screen md:sticky md:top-0">
+        <h1 class="text-xl font-bold text-blue-600 mb-6 border-b pb-2">iPhoneメール写真添付ガイド</h1>
+        <nav>
+            <a href="#" class="sidebar-link block py-1.5 px-2 sm:py-2 sm:px-3 rounded hover:bg-slate-100 transition-colors" data-target="introduction">はじめに</a>
+            <a href="#" class="sidebar-link block py-1.5 px-2 sm:py-2 sm:px-3 rounded hover:bg-slate-100 transition-colors" data-target="preparation">準備するもの</a>
+            <div>
+                <button class="sidebar-link font-semibold block w-full text-left py-1.5 px-2 sm:py-2 sm:px-3 rounded hover:bg-slate-100 transition-colors" data-target="method-main">添付方法</button>
+                <div class="ml-4 mt-1 space-y-1">
+                    <a href="#" class="sidebar-link block py-1.5 px-3 rounded hover:bg-slate-100 transition-colors text-sm" data-target="method1">メール作成画面から</a>
+                    <a href="#" class="sidebar-link block py-1.5 px-3 rounded hover:bg-slate-100 transition-colors text-sm" data-target="method2">「写真」アプリから</a>
+                </div>
+            </div>
+            <a href="#" class="sidebar-link block py-1.5 px-2 sm:py-2 sm:px-3 rounded hover:bg-slate-100 transition-colors" data-target="size-issues">写真のサイズ問題</a>
+            <a href="#" class="sidebar-link block py-1.5 px-2 sm:py-2 sm:px-3 rounded hover:bg-slate-100 transition-colors" data-target="troubleshooting">困ったときは</a>
+            <a href="#" class="sidebar-link block py-1.5 px-2 sm:py-2 sm:px-3 rounded hover:bg-slate-100 transition-colors" data-target="conclusion">おわりに</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-4 sm:p-6 md:p-10 overflow-y-auto">
+        <section id="introduction" class="content-section space-y-4 sm:space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">I. はじめに</h2>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">ごあいさつ</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">このガイドへようこそ！iPhoneを使ってメールに写真を付けるのは、実は思っているよりもずっと簡単なんです。このガイドをステップごとにゆっくり読んでいけば、あなたもきっとすぐに、大切な人やお友達に写真付きのメールを送れるようになりますよ。安心して、一緒に進めていきましょう。</p>
+            </article>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">このガイドで学べること</h3>
+                <ul class="list-disc list-inside text-sm sm:text-base text-slate-600 space-y-1 leading-relaxed">
+                    <li>iPhoneの標準アプリである「メール」アプリを開いて、新しくメールを書く画面から、直接写真を添付する方法。</li>
+                    <li>お気に入りの写真がたくさん入っている「写真」アプリから、送りたい写真を選んでメールに添付する方法。</li>
+                    <li>撮った写真のサイズが大きくてメールで送りにくいときに、どうすればスムーズに送れるようになるかのコツ。</li>
+                    <li>もし途中で「あれ？」と困ったことが起きても大丈夫なように、いくつかの簡単な解決方法もご紹介します。</li>
+                </ul>
+            </article>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">対象のiOSバージョンについて</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">このガイドは、iPhoneの基本ソフトであるiOSのバージョン <strong>iOS 18.5</strong> を使っていることを前提に作成しています。お使いのiPhoneのiOSバージョンがこれに近いほど、画面の表示や操作方法もこのガイドの説明とよく似ているはずです。iOSは時々新しくなるので、常に最新の状態にしておくと、iPhoneをより安全で便利に使えます。</p>
+            </article>
+        </section>
+
+        <section id="preparation" class="content-section space-y-4 sm:space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">II. 準備するもの</h2>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">あなたのiPhone</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">このガイドで説明する手順は、最近のiPhoneであれば、ほとんど同じように操作できます。</p>
+            </article>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">メールに添付したい写真</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">メールで送りたい写真が、iPhoneの「写真」アプリ（<span class="screenshot-placeholder-inline">🖼️ カラフルな花アイコン</span>）の中にきちんと保存されているか、あらかじめ確認しておきましょう。</p>
+            </article>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">メールアカウントの設定</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">iPhoneの「メール」アプリ（<span class="screenshot-placeholder-inline">✉️ 青地に白封筒アイコン</span>）で、ご自身のメールアドレスが使えるように、事前に設定が済んでいる必要があります。もし、まだメールの設定をしていない場合は、先にそちらを済ませてくださいね。メールアカウントが正しく設定されていないと、メールの送受信やファイルの添付がうまくいかないことがあります。</p>
+            </article>
+        </section>
+
+        <section id="method-main" class="content-section space-y-4 sm:space-y-6">
+             <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">添付方法</h2>
+             <p class="text-sm sm:text-base text-slate-600 leading-relaxed bg-white p-4 sm:p-6 rounded-lg shadow">左のメニューから具体的な添付方法（「メール作成画面から」または「「写真」アプリから」）を選択してください。</p>
+        </section>
+
+        <section id="method1" class="content-section space-y-4 sm:space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">III. 方法1：メール作成画面から写真を添付する</h2>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-3 sm:mb-4 bg-white p-3 sm:p-4 rounded-lg shadow-sm">まずは、メールを新しく書いている途中で写真を添付する方法です。これが一番基本的なやり方かもしれません。</p>
+            <div class="space-y-3">
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        A. 「メール」アプリを開いて、新しいメールを作成開始
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p>1. iPhoneのホーム画面で、「メール」アプリアイコン（<span class="screenshot-placeholder-inline">✉️ 青地に白い封筒</span>）を見つけてタップします。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📱 ホーム画面の「メール」アプリアイコンを強調表示</div>
+                        <p>2. 「メール」アプリが開いたら、画面右下の「新規作成」アイコン（<span class="screenshot-placeholder-inline">📝 四角い紙とペン</span>）をタップします。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">✉️ メールアプリ受信ボックス画面の右下「新規作成」アイコンを強調表示</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        B. 本文の入力場所をタップして、写真添付の準備
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p>1. 新規メール作成画面で、本文の白いスペースを一度タップします。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📧 新規メール作成画面、本文エリアにカーソル点滅</div>
+                        <p>2. キーボードが表示され、その上に「フォーマットバー」（<span class="screenshot-placeholder-inline"> Aa < > ... </span>）が表示されます。もし見えない場合は、改行キーを一度押してみてください。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">⌨️ キーボードの上にフォーマットバーが表示されている状態を強調表示</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        C. 写真を添付するためのアイコンを見つけてタップ
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p><strong>パターン1：山と太陽の絵のアイコン（写真ライブラリアイコン）</strong></p>
+                        <p>フォーマットバーの左側にある「<」や「>」の矢印アイコンをタップすると、山と太陽のアイコン（<span class="screenshot-placeholder-inline">🏞️ 写真ライブラリ</span>）が表示されることがあります。それをタップします。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">フォーマットバーの「<」または「>」アイコン → 「🏞️ 写真ライブラリ」アイコン表示を強調</div>
+                        <p><strong>パターン2：「写真またはビデオを挿入」または「添付ファイルを追加」</strong></p>
+                        <p>メール本文入力エリアを長押しするか、カーソルをタップすると表示されるメニューから「写真またはビデオを挿入」または「添付ファイルを追加」を選びます。メニューの右矢印で他の選択肢も確認できます。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">本文長押し時のポップアップメニュー、「写真またはビデオを挿入」等を強調</div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        D. 「写真」アプリから添付したい写真を選ぶ
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p>1. Cの手順後、iPhoneの写真一覧（フォトライブラリ）が表示されます。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">🖼️ メールアプリ内でフォトライブラリ表示、写真サムネイル一覧</div>
+                        <p>2. 添付したい写真をタップして選びます（複数選択可）。選ばれた写真にはチェックマークが付きます。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">✔️ フォトライブラリで複数写真が選択されチェックマークが付いている状態</div>
+                        <p>3. 選び終わったら、画面右上の「完了」または「追加」ボタンをタップします。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">👍 フォトライブラリ画面右上の「完了」ボタンを強調表示</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        E. メールに写真が添付されたことを確認して送信
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p>1. 元のメール作成画面に戻り、本文エリアや件名の下に選んだ写真のサムネイルが表示されていれば添付完了です。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📧 新規メール作成画面、本文中に添付写真のサムネイル表示</div>
+                        <p>2. 「宛先」「件名」「本文」を入力し、画面右上の送信アイコン（<span class="screenshot-placeholder-inline">➤ 紙飛行機など</span>）をタップして送信します。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">✅ 全項目入力済みのメール作成画面、送信アイコンを強調表示</div>
+                        <p>3. <strong>写真のサイズについて</strong>: 送信時に「このメッセージのサイズは○○MBです。次のサイズに縮小しますか？」と尋ねられることがあります。「小」「中」「大」「実際のサイズ」から選びます。通常は「中」がおすすめです。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📏 画像サイズ選択ポップアップ画面、「中」がおすすめ</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="method2" class="content-section space-y-4 sm:space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">IV. 方法2：「写真」アプリからメールに写真を添付する</h2>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-3 sm:mb-4 bg-white p-3 sm:p-4 rounded-lg shadow-sm">iPhoneの「写真」アプリで写真を見ているときに、「あ、この写真をメールで送りたいな」と思うこともあるでしょう。そんな時は、わざわざ「メール」アプリを開き直さなくても、直接「写真」アプリからメールに写真を添付できます。</p>
+            <div class="space-y-3">
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        A. 「写真」アプリを開いて、送りたい写真を選ぶ
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p>1. ホーム画面の「写真」アプリアイコン（<span class="screenshot-placeholder-inline">🖼️ カラフルな花アイコン</span>）をタップします。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📱 ホーム画面の「写真」アプリアイコンを強調表示</div>
+                        <p>2. 送りたい写真を探します。1枚ならタップして拡大表示。複数枚なら右上の「選択」をタップ後、各写真をタップして選びます（チェックマークが付きます）。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">🖼️ 写真アプリで1枚の写真が拡大表示、または複数写真選択モードでチェックマーク付き</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        B. 「共有」アイコンをタップする
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p>1. 写真を選んだ状態で、画面左下の「共有」アイコン（<span class="screenshot-placeholder-inline">📤 四角から上矢印</span>）をタップします。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📤 写真アプリ画面左下の「共有」アイコンを強調表示</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        C. 共有オプションから「メール」を選ぶ
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p>1. 画面下から「共有シート」が表示されます。</p>
+                        <p>2. アプリアイコンの列を左右にスワイプして「メール」アプリアイコン（<span class="screenshot-placeholder-inline">✉️ 青地に白封筒</span>）を探します。見つからない場合は右端の「その他」（<span class="screenshot-placeholder-inline">···</span>）をタップします。</p>
+                        <p>3. 「メール」アプリアイコンをタップします。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📲 共有シートのアプリアイコン列から「メール」アイコンを強調表示</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item bg-white rounded-lg shadow">
+                    <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                        D. メールを作成して送信
+                        <span class="arrow transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                        <p>1. 自動的に「メール」アプリが起動し、選んだ写真が添付された新規メール作成画面が開きます。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📧 メール新規作成画面、写真が既に添付済み</div>
+                        <p>2. あとは方法1のEと同様に、「宛先」「件名」「本文」を入力し、送信アイコンをタップします。</p>
+                        <p>3. 送信時に写真サイズを尋ねられたら、適切に選択します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="size-issues" class="content-section space-y-4 sm:space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">V. 写真のサイズが大きい場合の対処法</h2>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">なぜ写真のサイズが問題になるの？</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">メールで一度に送受信できるデータ量には上限があり、プロバイダや相手の環境によって異なります。サイズが大きいと、送信できない、相手が受信できない、開くのに時間がかかるなどの問題が発生する可能性があります。</p>
+            </article>
+            
+            <div class="accordion-item bg-white rounded-lg shadow">
+                <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                    A. 送信時の自動サイズ変更オプションを利用する
+                    <span class="arrow transform transition-transform duration-300">▼</span>
+                </button>
+                <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                    <p>送信直前に「このメッセージのサイズは○○MBです。次のサイズに縮小しますか？」と表示されることがあります。</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li><strong>小 (Small)</strong>: データサイズ最小。画質は少し粗くなる。</li>
+                        <li><strong>中 (Medium)</strong>: バランスが良い。おすすめ。</li>
+                        <li><strong>大 (Large)</strong>: 「中」より高画質だがデータも大きい。</li>
+                        <li><strong>実際のサイズ (Actual Size)</strong>: 縮小なし。非常に大きくなる可能性あり。</li>
+                    </ul>
+                    <div class="screenshot-placeholder text-xs sm:text-sm">📏 画像サイズ選択ポップアップ、「中」がおすすめ</div>
+                    <p><strong>おすすめ</strong>: 特にこだわりがなければ「<strong>中 (Medium)</strong>」を選びましょう。</p>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow">
+                <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                    B. 「写真」アプリで事前に編集してサイズを小さくする
+                    <span class="arrow transform transition-transform duration-300">▼</span>
+                </button>
+                <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                    <p><strong>トリミング (Cropping)</strong>: 写真の不要な部分を切り取ります。これによりファイルサイズが小さくなることがあります。</p>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>「写真」アプリで写真を開き、右上の「編集」をタップ。</li>
+                        <li>画面下の「切り取り」アイコン（<span class="screenshot-placeholder-inline">✂️ 四角い枠</span>）をタップ。</li>
+                        <li>写真の枠をドラッグして範囲調整。</li>
+                        <li>右下の「完了」をタップ。</li>
+                    </ol>
+                    <div class="screenshot-placeholder text-xs sm:text-sm">🖼️ 写真編集画面でのトリミング操作のステップ（1.編集ボタン 2.切り取りアイコン 3.範囲調整 4.完了ボタン）</div>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow">
+                <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                    C. (補足) Mail Dropについて
+                    <span class="arrow transform transition-transform duration-300">▼</span>
+                </button>
+                <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
+                    <p>非常に大きなファイル（通常20MB超、最大5GBまで）を送る場合、iCloudに一時アップロードし、相手にダウンロードリンクを送る機能です。iPhoneが自動的に提案することが多いです。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="troubleshooting" class="content-section space-y-4 sm:space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">VI. 困ったときは：よくある問題と解決策</h2>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">はじめに</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">iPhoneの操作に慣れないうちは戸惑うこともあるかもしれません。ここではよくある問題と簡単な解決策を紹介します。</p>
+            </article>
+
+            <div class="accordion-item bg-white rounded-lg shadow">
+                <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                    A. メール作成画面に、写真を添付するアイコンが見当たらない
+                    <span class="arrow transform transition-transform duration-300">▼</span>
+                </button>
+                <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-3 text-sm sm:text-base">
+                    <div>
+                        <h4 class="font-medium text-slate-700">原因1：本文の入力場所をタップしていないかも？</h4>
+                        <p><strong>確認と対処</strong>: 本文エリアを一度タップすると、キーボードと共にフォーマットバーが表示されることが多いです。再度タップしてみてください。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">👆 本文エリアタップ → フォーマットバー表示</div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-slate-700">原因2：矢印アイコン「<」や「>」に隠れているかも？</h4>
+                        <p><strong>確認と対処</strong>: フォーマットバー左端の「<」や「>」をタップすると、隠れたアイコン（写真添付アイコン含む）が表示されることがあります。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">フォーマットバーの「<」または「>」 → 隠れた写真アイコン表示</div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-slate-700">原因3：メールアプリの一時的な不具合かも？</h4>
+                        <p><strong>対処法1：メールアプリを再起動する</strong></p>
+                        <ol class="list-decimal list-inside ml-4 text-xs sm:text-sm space-y-1">
+                            <li>アプリスイッチャーを開く（ホームボタンなし機種: 画面下からスワイプして止める / ホームボタンあり機種: ホームボタン2回押し）。</li>
+                            <li>メールアプリのプレビューを上にスワイプして終了。</li>
+                            <li>再度メールアプリを開く。</li>
+                        </ol>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">🔄 アプリスイッチャー表示 → メールアプリ終了 → 再起動</div>
+                        <p class="mt-1"><strong>対処法2：iPhoneを再起動する</strong></p>
+                        <p class="text-xs sm:text-sm">上記で改善しない場合、iPhone本体を再起動してみてください。</p>
+                    </div>
+                     <div>
+                        <h4 class="font-medium text-slate-700">原因4: iOSのバージョンが古い、またはバグの可能性</h4>
+                        <p><strong>対処法3: iOSを最新バージョンにアップデートする</strong></p>
+                        <p class="text-xs sm:text-sm">「設定」アプリ → 「一般」 → 「ソフトウェア・アップデート」で最新版を確認し、あればアップデートします。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow">
+                <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                    B. 写真を添付するとメールが送信できない、またはエラーが出る
+                    <span class="arrow transform transition-transform duration-300">▼</span>
+                </button>
+                <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-3 text-sm sm:text-base">
+                    <div>
+                        <h4 class="font-medium text-slate-700">原因1：写真のファイルサイズが大きすぎる</h4>
+                        <p><strong>対処法</strong>: 送信時のサイズ選択で「小」や「中」を選ぶか、「写真」アプリでトリミング等をしてサイズを小さくします。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-slate-700">原因2：インターネットの接続が不安定</h4>
+                        <p><strong>対処法</strong>: Wi-Fiやモバイルデータ通信の電波状況を確認。機内モードがオフになっているかも確認。</p>
+                        <div class="screenshot-placeholder text-xs sm:text-sm">📶 コントロールセンターでWi-Fi、モバイルデータ、機内モードアイコン確認</div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-slate-700">原因3：相手のメール受信設定で拒否されている</h4>
+                        <p><strong>対処法</strong>: 稀ですが、相手に確認してみるのも一つの方法です。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow">
+                <button class="accordion-button w-full text-left p-3 sm:p-4 font-semibold text-blue-700 hover:bg-blue-50 transition-colors flex justify-between items-center text-sm sm:text-base">
+                    C. 写真を添付しようとすると「写真を添付できません」などのエラーが出る
+                    <span class="arrow transform transition-transform duration-300">▼</span>
+                </button>
+                <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-3 text-sm sm:text-base">
+                    <div>
+                        <h4 class="font-medium text-slate-700">原因1：iPhoneのストレージ（空き容量）が不足している</h4>
+                        <p><strong>対処法</strong>: 「設定」→「一般」→「iPhoneストレージ」で空き容量を確認し、不要なデータを削除して空きを増やします。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-slate-700">原因2：一時的なエラー</h4>
+                        <p><strong>対処法</strong>: メールアプリの再起動、それでもダメならiPhone本体の再起動を試します。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">まとめ表：困ったときのチェックポイント</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-xs sm:text-sm text-left text-slate-500">
+                        <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                            <tr>
+                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">問題</th>
+                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">考えられる主な原因</th>
+                                <th scope="col" class="px-4 py-2 sm:px-6 sm:py-3">まず試すこと</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b">
+                                <td class="px-4 py-3 sm:px-6 sm:py-4 font-medium text-slate-900">写真添付アイコンが見当たらない</td>
+                                <td class="px-4 py-3 sm:px-6 sm:py-4">本文未タップ、フォーマットバーの矢印の奥、アプリの一時的な不具合</td>
+                                <td class="px-4 py-3 sm:px-6 sm:py-4">メール本文エリアをタップ、フォーマットバーの「<」や「>」をタップ、メールアプリ再起動</td>
+                            </tr>
+                            <tr class="bg-slate-50 border-b">
+                                <td class="px-4 py-3 sm:px-6 sm:py-4 font-medium text-slate-900">メールが送信できない、エラーが出る</td>
+                                <td class="px-4 py-3 sm:px-6 sm:py-4">写真ファイルサイズ大、ネット接続不安定</td>
+                                <td class="px-4 py-3 sm:px-6 sm:py-4">送信時写真サイズ「小」か「中」選択、通信状況確認</td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-4 py-3 sm:px-6 sm:py-4 font-medium text-slate-900">「写真を添付できません」エラー</td>
+                                <td class="px-4 py-3 sm:px-6 sm:py-4">iPhoneストレージ不足、一時的エラー</td>
+                                <td class="px-4 py-3 sm:px-6 sm:py-4">ストレージ空き容量確認・整理、iPhone再起動</td>
+                            </tr>
+                            <tr class="bg-slate-50">
+                                <td class="px-4 py-3 sm:px-6 sm:py-4 font-medium text-slate-900">送信時写真サイズ選択肢非表示 (iOS 18.5では通常表示)</td>
+                                <td class="px-4 py-3 sm:px-6 sm:py-4">稀なiOS不具合、特定アカウント設定、極小写真</td>
+                                <td class="px-4 py-3 sm:px-6 sm:py-4">iPhone再起動、iOS最新版確認</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+        <section id="conclusion" class="content-section space-y-4 sm:space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">VII. おわりに</h2>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">まとめ</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">お疲れ様でした！ これで、iPhoneからメールに写真を添付するための基本的な2つの方法、「メール作成画面から添付する方法」と「写真アプリから共有する方法」を学ぶことができましたね。どちらの方法もそれぞれに便利な点がありますので、その時の状況や、ご自身の使いやすい方で試してみてください。</p>
+            </article>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">練習してみましょう</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">どんなことでも、最初は少し戸惑うかもしれませんが、心配いりません。このガイドを見ながら何度か練習すれば、すぐに操作に慣れて、自信を持って写真を添付できるようになるはずです。ぜひ、ご家族やお友達に、あなたが撮った素敵な写真や、面白い出来事の写真などをメールで送ってみてください。きっと喜ばれますよ。</p>
+            </article>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">さらに便利なヒント</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">もし一度にたくさんの写真を送りたい場合は、メールを何通かに分けて送るのが、相手にとっても親切な方法です。一度に大量の写真が添付されたメールは、受信するのに時間がかかったり、相手のメールボックスを圧迫してしまったりすることがあります。</p>
+            </article>
+            <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">応援しています！</h3>
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">このガイドが、あなたのiPhoneライフをさらに楽しく、そして便利にするためのお手伝いが少しでもできれば、私たちもとても嬉しいです。iPhoneにはまだまだたくさんの便利な機能がありますので、これからも色々なことに挑戦してみてくださいね！</p>
+            </article>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+
+            // Function to activate a section
+            function activateSection(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    }
+                });
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.target === targetId || (link.parentElement.previousElementSibling && link.parentElement.previousElementSibling.dataset.target === targetId.split('-')[0]+'-main' && targetId.startsWith(link.parentElement.previousElementSibling.dataset.target.split('-')[0]))) {
+                         link.classList.add('active');
+                    }
+                });
+                 // Special handling for main category when sub-category is active
+                if (targetId === 'method1' || targetId === 'method2') {
+                    const mainMethodLink = document.querySelector('.sidebar-link[data-target="method-main"]');
+                    if (mainMethodLink) {
+                        mainMethodLink.classList.add('active');
+                    }
+                }
+
+                window.scrollTo(0, 0); // Scroll to top of page on section change
+            }
+
+            // Sidebar navigation
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.dataset.target;
+                    if (targetId) {
+                       activateSection(targetId);
+                    }
+                });
+            });
+
+            // Accordion functionality
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    const arrow = this.querySelector('.arrow');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        content.style.paddingTop = null;
+                        content.style.paddingBottom = null;
+                        if(arrow) arrow.style.transform = 'rotate(0deg)';
+
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        content.style.paddingTop = '0.75rem'; // sm:p-3 equivalent
+                        content.style.paddingBottom = '0.75rem';
+                         if(arrow) arrow.style.transform = 'rotate(180deg)';
+                    }
+                });
+                 // Ensure accordion content has appropriate padding when displayed
+                const content = button.nextElementSibling;
+                const arrow = button.querySelector('.arrow');
+                if (content.classList.contains('accordion-content')) {
+                    if (button.classList.contains('active')) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        content.style.paddingTop = '0.75rem';
+                        content.style.paddingBottom = '0.75rem';
+                        if(arrow) arrow.style.transform = 'rotate(180deg)';
+                    } else {
+                         content.style.maxHeight = null;
+                         content.style.paddingTop = null;
+                         content.style.paddingBottom = null;
+                         if(arrow) arrow.style.transform = 'rotate(0deg)';
+                    }
+                }
+            });
+
+            // Activate the first section by default ('introduction')
+            let initialSection = window.location.hash ? window.location.hash.substring(1) : 'introduction';
+            // Validate initialSection to prevent errors if hash is not a valid section id
+            const validSectionIds = Array.from(contentSections).map(s => s.id);
+            if (!validSectionIds.includes(initialSection)) {
+                initialSection = 'introduction';
+            }
+            activateSection(initialSection);
+
+
+            // Update URL hash on section change for deep linking (optional)
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.dataset.target) {
+                        history.pushState(null, null, '#' + this.dataset.target);
+                    }
+                });
+            });
+            // Listen to hash changes to activate section (e.g. browser back/forward)
+            window.addEventListener('hashchange', function() {
+                let hash = window.location.hash.substring(1);
+                if (!validSectionIds.includes(hash)) {
+                    hash = 'introduction'; // Default if hash is invalid or empty
+                }
+                activateSection(hash);
+            });
+
+        });
+    </script>
+</body>
+</html>
+
