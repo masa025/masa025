@@ -7,15 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Application Structure Plan: 
         The SPA is structured with a fixed sidebar navigation for top-level sections of the guide. On mobile, the sidebar stacks on top.
-        The main content area dynamically displays the selected section's content.
+        The main content area dynamically displays the selected section's content. "Introduction" section is active by default.
         Key procedures (Method 1, Method 2) are broken down into accordion-style steps for progressive disclosure.
         Troubleshooting is organized by common problems, also using accordions for solutions.
-        This structure was chosen to make a text-heavy guide more digestible and easier to navigate than a linear document, allowing users to quickly jump to relevant parts and explore steps at their own pace, optimized for various screen sizes.
+        This structure was chosen to make a text-heavy guide more digestible and easier to navigate than a linear document, allowing users to quickly jump to relevant parts and explore steps at their own pace, optimized for various screen sizes. Images are now used for placeholders.
     -->
     <!-- Visualization & Content Choices:
-        - Guide Introduction: Text display. Goal: Inform. Method: Simple HTML. Justification: Direct presentation of introductory text.
+        - Guide Introduction: Text display. Goal: Inform. Method: Simple HTML. Justification: Direct presentation of introductory text. Active by default.
         - Preparations: List format. Goal: Inform. Method: HTML list. Justification: Clear, concise checklist.
-        - Attachment Methods (Method 1 & 2): Accordion for steps. Goal: Organize & Inform. Method: HTML, JS for accordion. Justification: Breaks down complex procedures into manageable, expandable steps. Screenshots are replaced with descriptive text and Unicode icons.
+        - Attachment Methods (Method 1 & 2): Accordion for steps. Goal: Organize & Inform. Method: HTML, JS for accordion. Justification: Breaks down complex procedures into manageable, expandable steps. Screenshot placeholders are replaced with actual <img> tags using placehold.co for illustrative purposes.
         - Photo Size Issues: Text sections with accordions for details. Goal: Inform. Method: HTML, JS for accordion. Justification: Explains concepts and solutions clearly.
         - Troubleshooting: Accordions grouped by problem type. Goal: Organize & Inform. Method: HTML, JS for accordion. Justification: Allows users to quickly find solutions to specific problems. The summary table is converted to an HTML table.
         - Conclusion: Text display. Goal: Inform. Method: Simple HTML. Justification: Direct presentation of concluding remarks.
@@ -50,20 +50,7 @@
         .sidebar-link:hover {
             background-color: #f1f3f5;
         }
-        .screenshot-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed #ced4da;
-            border-radius: 0.375rem;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            background-color: #e9ecef;
-            color: #495057;
-            font-style: italic;
-            text-align: center;
-        }
-         .screenshot-placeholder-inline {
+        .screenshot-placeholder-inline {
             display: inline-flex;
             align-items: center;
             border: 1px dashed #ced4da;
@@ -73,6 +60,19 @@
             background-color: #e9ecef;
             color: #495057;
             font-style: italic;
+        }
+        .image-placeholder-error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #ffc107; /* Warning color border */
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background-color: #fff3cd; /* Warning color background */
+            color: #856404; /* Warning color text */
+            text-align: center;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -97,7 +97,7 @@
     </aside>
 
     <main class="flex-1 p-4 sm:p-6 md:p-10 overflow-y-auto">
-        <section id="introduction" class="content-section space-y-4 sm:space-y-6">
+        <section id="introduction" class="content-section active space-y-4 sm:space-y-6">
             <h2 class="text-2xl sm:text-3xl font-bold text-slate-700 border-b-2 border-blue-500 pb-2">I. はじめに</h2>
             <article class="bg-white p-4 sm:p-6 rounded-lg shadow">
                 <h3 class="text-lg sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">ごあいさつ</h3>
@@ -150,9 +150,9 @@
                     </button>
                     <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
                         <p>1. iPhoneのホーム画面で、「メール」アプリアイコン（<span class="screenshot-placeholder-inline">✉️ 青地に白い封筒</span>）を見つけてタップします。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📱 ホーム画面の「メール」アプリアイコンを強調表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=ホーム画面+メールアプリアイコン" alt="ホーム画面の「メール」アプリアイコンを強調表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p>2. 「メール」アプリが開いたら、画面右下の「新規作成」アイコン（<span class="screenshot-placeholder-inline">📝 四角い紙とペン</span>）をタップします。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">✉️ メールアプリ受信ボックス画面の右下「新規作成」アイコンを強調表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=メール新規作成アイコン" alt="メールアプリ受信ボックス画面の右下「新規作成」アイコンを強調表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                 </div>
 
@@ -163,9 +163,9 @@
                     </button>
                     <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
                         <p>1. 新規メール作成画面で、本文の白いスペースを一度タップします。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📧 新規メール作成画面、本文エリアにカーソル点滅</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=新規メール本文入力" alt="新規メール作成画面、本文エリアにカーソル点滅" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p>2. キーボードが表示され、その上に「フォーマットバー」（<span class="screenshot-placeholder-inline"> Aa < > ... </span>）が表示されます。もし見えない場合は、改行キーを一度押してみてください。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">⌨️ キーボードの上にフォーマットバーが表示されている状態を強調表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=フォーマットバー表示" alt="キーボードの上にフォーマットバーが表示されている状態を強調表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                 </div>
 
@@ -177,10 +177,10 @@
                     <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
                         <p><strong>パターン1：山と太陽の絵のアイコン（写真ライブラリアイコン）</strong></p>
                         <p>フォーマットバーの左側にある「<」や「>」の矢印アイコンをタップすると、山と太陽のアイコン（<span class="screenshot-placeholder-inline">🏞️ 写真ライブラリ</span>）が表示されることがあります。それをタップします。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">フォーマットバーの「<」または「>」アイコン → 「🏞️ 写真ライブラリ」アイコン表示を強調</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=写真ライブラリアイコン表示" alt="フォーマットバーの「<」または「>」アイコン → 「🏞️ 写真ライブラリ」アイコン表示を強調" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p><strong>パターン2：「写真またはビデオを挿入」または「添付ファイルを追加」</strong></p>
                         <p>メール本文入力エリアを長押しするか、カーソルをタップすると表示されるメニューから「写真またはビデオを挿入」または「添付ファイルを追加」を選びます。メニューの右矢印で他の選択肢も確認できます。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">本文長押し時のポップアップメニュー、「写真またはビデオを挿入」等を強調</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=ポップアップメニュー+写真挿入" alt="本文長押し時のポップアップメニュー、「写真またはビデオを挿入」等を強調" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                 </div>
                 
@@ -191,11 +191,11 @@
                     </button>
                     <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
                         <p>1. Cの手順後、iPhoneの写真一覧（フォトライブラリ）が表示されます。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">🖼️ メールアプリ内でフォトライブラリ表示、写真サムネイル一覧</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=フォトライブラリ表示" alt="メールアプリ内でフォトライブラリ表示、写真サムネイル一覧" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p>2. 添付したい写真をタップして選びます（複数選択可）。選ばれた写真にはチェックマークが付きます。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">✔️ フォトライブラリで複数写真が選択されチェックマークが付いている状態</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=複数写真選択済み" alt="フォトライブラリで複数写真が選択されチェックマークが付いている状態" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p>3. 選び終わったら、画面右上の「完了」または「追加」ボタンをタップします。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">👍 フォトライブラリ画面右上の「完了」ボタンを強調表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=フォトライブラリ「完了」" alt="フォトライブラリ画面右上の「完了」ボタンを強調表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                 </div>
 
@@ -206,11 +206,11 @@
                     </button>
                     <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
                         <p>1. 元のメール作成画面に戻り、本文エリアや件名の下に選んだ写真のサムネイルが表示されていれば添付完了です。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📧 新規メール作成画面、本文中に添付写真のサムネイル表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=添付写真サムネイル表示" alt="新規メール作成画面、本文中に添付写真のサムネイル表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p>2. 「宛先」「件名」「本文」を入力し、画面右上の送信アイコン（<span class="screenshot-placeholder-inline">➤ 紙飛行機など</span>）をタップして送信します。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">✅ 全項目入力済みのメール作成画面、送信アイコンを強調表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=メール送信準備完了" alt="全項目入力済みのメール作成画面、送信アイコンを強調表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p>3. <strong>写真のサイズについて</strong>: 送信時に「このメッセージのサイズは○○MBです。次のサイズに縮小しますか？」と尋ねられることがあります。「小」「中」「大」「実際のサイズ」から選びます。通常は「中」がおすすめです。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📏 画像サイズ選択ポップアップ画面、「中」がおすすめ</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=画像サイズ選択「中」" alt="画像サイズ選択ポップアップ画面、「中」がおすすめ" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                 </div>
             </div>
@@ -227,9 +227,9 @@
                     </button>
                     <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
                         <p>1. ホーム画面の「写真」アプリアイコン（<span class="screenshot-placeholder-inline">🖼️ カラフルな花アイコン</span>）をタップします。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📱 ホーム画面の「写真」アプリアイコンを強調表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=ホーム画面+写真アプリアイコン" alt="ホーム画面の「写真」アプリアイコンを強調表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p>2. 送りたい写真を探します。1枚ならタップして拡大表示。複数枚なら右上の「選択」をタップ後、各写真をタップして選びます（チェックマークが付きます）。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">🖼️ 写真アプリで1枚の写真が拡大表示、または複数写真選択モードでチェックマーク付き</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=写真アプリで写真選択" alt="写真アプリで1枚の写真が拡大表示、または複数写真選択モードでチェックマーク付き" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                 </div>
 
@@ -240,7 +240,7 @@
                     </button>
                     <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
                         <p>1. 写真を選んだ状態で、画面左下の「共有」アイコン（<span class="screenshot-placeholder-inline">📤 四角から上矢印</span>）をタップします。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📤 写真アプリ画面左下の「共有」アイコンを強調表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=写真アプリ「共有」アイコン" alt="写真アプリ画面左下の「共有」アイコンを強調表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                 </div>
 
@@ -253,7 +253,7 @@
                         <p>1. 画面下から「共有シート」が表示されます。</p>
                         <p>2. アプリアイコンの列を左右にスワイプして「メール」アプリアイコン（<span class="screenshot-placeholder-inline">✉️ 青地に白封筒</span>）を探します。見つからない場合は右端の「その他」（<span class="screenshot-placeholder-inline">···</span>）をタップします。</p>
                         <p>3. 「メール」アプリアイコンをタップします。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📲 共有シートのアプリアイコン列から「メール」アイコンを強調表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=共有シート「メール」アイコン" alt="共有シートのアプリアイコン列から「メール」アイコンを強調表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                 </div>
 
@@ -264,7 +264,7 @@
                     </button>
                     <div class="accordion-content p-3 sm:p-4 border-t border-slate-200 text-slate-600 space-y-2 text-sm sm:text-base">
                         <p>1. 自動的に「メール」アプリが起動し、選んだ写真が添付された新規メール作成画面が開きます。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📧 メール新規作成画面、写真が既に添付済み</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=メールに写真添付済み" alt="メール新規作成画面、写真が既に添付済み" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p>2. あとは方法1のEと同様に、「宛先」「件名」「本文」を入力し、送信アイコンをタップします。</p>
                         <p>3. 送信時に写真サイズを尋ねられたら、適切に選択します。</p>
                     </div>
@@ -292,7 +292,7 @@
                         <li><strong>大 (Large)</strong>: 「中」より高画質だがデータも大きい。</li>
                         <li><strong>実際のサイズ (Actual Size)</strong>: 縮小なし。非常に大きくなる可能性あり。</li>
                     </ul>
-                    <div class="screenshot-placeholder text-xs sm:text-sm">📏 画像サイズ選択ポップアップ、「中」がおすすめ</div>
+                    <img src="https://placehold.co/400x250/e9ecef/495057?text=画像サイズ選択「中」" alt="画像サイズ選択ポップアップ、「中」がおすすめ" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     <p><strong>おすすめ</strong>: 特にこだわりがなければ「<strong>中 (Medium)</strong>」を選びましょう。</p>
                 </div>
             </div>
@@ -310,7 +310,7 @@
                         <li>写真の枠をドラッグして範囲調整。</li>
                         <li>右下の「完了」をタップ。</li>
                     </ol>
-                    <div class="screenshot-placeholder text-xs sm:text-sm">🖼️ 写真編集画面でのトリミング操作のステップ（1.編集ボタン 2.切り取りアイコン 3.範囲調整 4.完了ボタン）</div>
+                    <img src="https://placehold.co/400x250/e9ecef/495057?text=写真トリミング操作" alt="写真編集画面でのトリミング操作のステップ（1.編集ボタン 2.切り取りアイコン 3.範囲調整 4.完了ボタン）" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                 </div>
             </div>
 
@@ -341,12 +341,12 @@
                     <div>
                         <h4 class="font-medium text-slate-700">原因1：本文の入力場所をタップしていないかも？</h4>
                         <p><strong>確認と対処</strong>: 本文エリアを一度タップすると、キーボードと共にフォーマットバーが表示されることが多いです。再度タップしてみてください。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">👆 本文エリアタップ → フォーマットバー表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=本文タップでフォーマットバー" alt="本文エリアタップ → フォーマットバー表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                     <div>
                         <h4 class="font-medium text-slate-700">原因2：矢印アイコン「<」や「>」に隠れているかも？</h4>
                         <p><strong>確認と対処</strong>: フォーマットバー左端の「<」や「>」をタップすると、隠れたアイコン（写真添付アイコン含む）が表示されることがあります。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">フォーマットバーの「<」または「>」 → 隠れた写真アイコン表示</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=隠れた写真アイコン表示" alt="フォーマットバーの「<」または「>」 → 隠れた写真アイコン表示" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                     <div>
                         <h4 class="font-medium text-slate-700">原因3：メールアプリの一時的な不具合かも？</h4>
@@ -356,7 +356,7 @@
                             <li>メールアプリのプレビューを上にスワイプして終了。</li>
                             <li>再度メールアプリを開く。</li>
                         </ol>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">🔄 アプリスイッチャー表示 → メールアプリ終了 → 再起動</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=メールアプリ再起動手順" alt="アプリスイッチャー表示 → メールアプリ終了 → 再起動" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                         <p class="mt-1"><strong>対処法2：iPhoneを再起動する</strong></p>
                         <p class="text-xs sm:text-sm">上記で改善しない場合、iPhone本体を再起動してみてください。</p>
                     </div>
@@ -381,7 +381,7 @@
                     <div>
                         <h4 class="font-medium text-slate-700">原因2：インターネットの接続が不安定</h4>
                         <p><strong>対処法</strong>: Wi-Fiやモバイルデータ通信の電波状況を確認。機内モードがオフになっているかも確認。</p>
-                        <div class="screenshot-placeholder text-xs sm:text-sm">📶 コントロールセンターでWi-Fi、モバイルデータ、機内モードアイコン確認</div>
+                        <img src="https://placehold.co/400x250/e9ecef/495057?text=コントロールセンター接続確認" alt="コントロールセンターでWi-Fi、モバイルデータ、機内モードアイコン確認" class="w-full h-auto max-w-md mx-auto rounded-md border border-slate-300 shadow-sm my-2 object-contain" style="max-height: 250px;" onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-placeholder-error'; p.textContent='画像表示エラー: '+this.alt; this.parentNode.insertBefore(p, this.nextSibling);">
                     </div>
                     <div>
                         <h4 class="font-medium text-slate-700">原因3：相手のメール受信設定で拒否されている</h4>
