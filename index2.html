@@ -11,6 +11,8 @@
         body {
             font-family: 'Noto Sans JP', 'Inter', sans-serif;
             background-color: #fdfaf6; /* やわらかい背景色 */
+            color: #333; /* 基本の文字色 */
+            transition: background-color 0.3s, color 0.3s;
         }
         .header-bg {
             background-color: #FFDEAD; /* ナバホホワイト - 温かみのある色 */
@@ -85,6 +87,122 @@
         .trivia-card { /* 豆知識表示用カード */
             @apply bg-yellow-50 border border-yellow-300 p-6 rounded-xl shadow-lg mt-8;
         }
+
+        /* --- High Contrast Mode Styles --- */
+        body.high-contrast-mode {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        body.high-contrast-mode .header-bg,
+        body.high-contrast-mode .footer-bg {
+            background-color: #111111 !important;
+            border-bottom: 1px solid #ffff00; /* Yellow border for separation */
+        }
+        body.high-contrast-mode .footer-bg {
+            border-top: 1px solid #ffff00;
+            border-bottom: none;
+        }
+        body.high-contrast-mode a,
+        body.high-contrast-mode .nav-link {
+            color: #ffff00 !important; /* Yellow for links */
+        }
+        body.high-contrast-mode .nav-link:hover {
+            color: #000000 !important; /* Black text on yellow hover */
+            background-color: #ffff00 !important;
+        }
+        body.high-contrast-mode .nav-link-active {
+            color: #000000 !important;
+            background-color: #ffff00 !important;
+            font-weight: bold;
+        }
+        body.high-contrast-mode .text-orange-700, 
+        body.high-contrast-mode .text-yellow-700,
+        body.high-contrast-mode .text-teal-700,
+        body.high-contrast-mode .text-orange-600, /* Q&A title color */
+        body.high-contrast-mode .text-orange-500  /* Icon color */
+        {
+            color: #ffff00 !important; /* Yellow for colored text */
+        }
+         body.high-contrast-mode .text-gray-700,
+         body.high-contrast-mode .text-gray-800,
+         body.high-contrast-mode .text-gray-600,
+         body.high-contrast-mode .text-gray-500 {
+            color: #dddddd !important; /* Lighter gray for less emphasis text */
+         }
+        body.high-contrast-mode .card,
+        body.high-contrast-mode .modal-content,
+        body.high-contrast-mode #accessibility-panel,
+        body.high-contrast-mode .bg-orange-50, 
+        body.high-contrast-mode .bg-yellow-50,
+        body.high-contrast-mode .bg-teal-50,
+        body.high-contrast-mode .question-item, 
+        body.high-contrast-mode .event-item-ai
+         {
+            background-color: #1a1a1a !important; /* Dark gray for card-like backgrounds */
+            border: 1px solid #ffff00 !important;
+            color: #ffffff !important;
+        }
+        body.high-contrast-mode .button-primary {
+            background-color: #ffff00 !important; /* Yellow background */
+            color: #000000 !important; /* Black text */
+            border: 1px solid #000000 !important;
+        }
+        body.high-contrast-mode .button-primary:hover {
+            background-color: #dddd00 !important; /* Darker yellow on hover */
+        }
+        body.high-contrast-mode .button-secondary,
+        body.high-contrast-mode .button-ai {
+            background-color: #000000 !important; /* Black background */
+            color: #ffff00 !important; /* Yellow text */
+            border: 1px solid #ffff00 !important;
+        }
+        body.high-contrast-mode .button-secondary:hover,
+        body.high-contrast-mode .button-ai:hover {
+            background-color: #333333 !important; /* Dark gray on hover */
+        }
+        body.high-contrast-mode .button-ai[disabled] { /* Explicitly target disabled AI button */
+             background-color: #222222 !important;
+             color: #777777 !important;
+             border-color: #777777 !important;
+        }
+        body.high-contrast-mode input[type="text"],
+        body.high-contrast-mode input[type="date"],
+        body.high-contrast-mode textarea,
+        body.high-contrast-mode select {
+            background-color: #111111 !important; /* Dark background for form fields */
+            color: #ffffff !important;
+            border: 1px solid #ffff00 !important;
+        }
+        body.high-contrast-mode input::placeholder,
+        body.high-contrast-mode textarea::placeholder {
+            color: #bbbbbb !important;
+        }
+        body.high-contrast-mode .icon-style { /* Ensure icons are also yellow */
+            color: #ffff00 !important;
+        }
+        body.high-contrast-mode .bg-gradient-to-r { /* Remove gradient, use solid color */
+            background-image: none !important;
+            background-color: #111111 !important; /* Dark background for hero section */
+        }
+        body.high-contrast-mode #saitama-trivia-loading,
+        body.high-contrast-mode #ai-events-loading,
+        body.high-contrast-mode #ai-advice-loading,
+        body.high-contrast-mode #loading-questions {
+            color: #cccccc !important;
+        }
+        body.high-contrast-mode .text-white { /* Ensure text meant to be white stays white */
+             color: #ffffff !important;
+        }
+        body.high-contrast-mode #close-accessibility-panel i,
+        body.high-contrast-mode #mobile-menu-button i,
+        body.high-contrast-mode #accessibility-toggle i {
+            color: #ffff00 !important; /* Make panel icons yellow */
+        }
+        body.high-contrast-mode #accessibility-panel .text-gray-700,
+        body.high-contrast-mode #accessibility-panel .text-gray-600 {
+            color: #ffffff !important; /* Text inside accessibility panel */
+        }
+
     </style>
 </head>
 <body class="text-gray-800 leading-relaxed">
@@ -120,11 +238,15 @@
         <h3 class="text-lg font-semibold mb-3 text-gray-700">表示設定</h3>
         <div class="space-y-3">
             <div><label for="font-size-slider" class="block text-sm font-medium text-gray-700">文字サイズ:</label><input type="range" id="font-size-slider" min="80" max="150" value="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"><span id="font-size-value" class="text-sm text-gray-600">標準 (100%)</span></div>
-            <div><label class="block text-sm font-medium text-gray-700">コントラスト:</label><button id="contrast-toggle" class="w-full button-secondary text-sm py-2">ハイコントラスト (準備中)</button></div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">コントラスト:</label>
+                <button id="contrast-toggle" class="w-full button-secondary text-sm py-2">ハイコントラストにする</button>
+            </div>
             <div>
                 <label for="language-select" class="block text-sm font-medium text-gray-700">言語選択:</label>
                 <select id="language-select" class="w-full mt-1 block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md">
-                    <option value="home">日本語</option> <option value="easyJapanese">やさしい日本語</option>
+                    <option value="home">日本語</option> 
+                    <option value="easyJapanese">やさしい日本語</option>
                     <option value="english">English</option>
                 </select>
             </div>
@@ -173,7 +295,6 @@
                 userId = user.uid;
                 document.getElementById('user-id-display').textContent = userId;
                 const currentPage = window.location.hash.substring(1) || 'home';
-                // Initialize page specific features if on that page
                 if (currentPage === 'plaza') loadPlazaFeatures();
                 if (currentPage === 'home') initializeHomePage(); 
                 if (currentPage === 'events') initializeEventsPage();
@@ -317,16 +438,11 @@
                 mainContent.innerHTML = pageContents[pageName];
                 window.scrollTo(0, 0);
                 navLinks.forEach(link => { link.classList.remove('nav-link-active'); if (link.dataset.page === pageName) link.classList.add('nav-link-active'); });
-                // For language pages, ensure correct nav link is active (or none if not in main nav)
                 if (pageName === 'easyJapanese' || pageName === 'english') {
-                    // No specific nav link for these, so all main navs are inactive
                     navLinks.forEach(link => link.classList.remove('nav-link-active'));
                 }
-
-
                 mobileMenu.classList.add('hidden');
 
-                // Initialize page-specific JS after content is loaded
                 if (pageName === 'plaza' && auth.currentUser) loadPlazaFeatures();
                 if (pageName === 'events') initializeEventsPage();
                 if (pageName === 'home') initializeHomePage();
@@ -349,14 +465,20 @@
             const langPageKey = e.target.value;
             if (pageContents[langPageKey]) {
                 navigateTo(langPageKey);
-                window.location.hash = langPageKey; // Update URL hash
+                window.location.hash = langPageKey; 
             } else {
-                // Fallback or error message if the page key isn't found (should not happen with correct option values)
                 showModal('言語設定', `選択された言語のページ (${langPageKey}) は見つかりませんでした。`);
             }
         });
         
-        contrastToggle.addEventListener('click', () => showModal('コントラスト設定', 'ハイコントラスト機能 (準備中)'));
+        contrastToggle.addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast-mode');
+            if (document.body.classList.contains('high-contrast-mode')) {
+                contrastToggle.textContent = '標準コントラストに戻す';
+            } else {
+                contrastToggle.textContent = 'ハイコントラストにする';
+            }
+        });
 
         window.showModal = function(title, message) { modalTitle.textContent = title; modalMessage.textContent = message; messageModal.classList.remove('hidden'); }
         modalCloseButton.addEventListener('click', () => messageModal.classList.add('hidden'));
@@ -367,18 +489,17 @@
             if (!auth || !db || !userId || !auth.currentUser) {
                 console.log("Plaza features cannot be loaded: Firebase not ready or user not authenticated.");
                 const qList = document.getElementById('questions-list');
-                if (qList) qList.innerHTML = '<p class="text-gray-500">質問機能の利用には認証が必要です。しばらくお待ちください...</p>';
+                if (qList) { qList.innerHTML = '<p class="text-gray-500">質問機能の利用には認証が必要です。しばらくお待ちください...</p>'; }
                 return;
             }
             const postQuestionForm = document.getElementById('post-question-form');
             const questionsList = document.getElementById('questions-list');
             const loadingQuestions = document.getElementById('loading-questions');
-
-            if (!postQuestionForm || !questionsList) { return; }
-
+            if (!postQuestionForm || !questionsList) { console.error("Plaza page elements (form or list) not found."); return; }
+        
             postQuestionForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                if (!auth.currentUser) { showModal("投稿エラー", "サインインが必要です。"); return; }
+                if (!auth.currentUser) { showModal("投稿エラー", "質問を投稿するにはサインインが必要です。"); return; }
                 const questionText = postQuestionForm.questionText.value.trim();
                 if (!questionText) { showModal("投稿エラー", "質問内容を入力してください。"); return; }
                 try {
@@ -389,24 +510,30 @@
                         createdAt: serverTimestamp(), answers: []
                     });
                     postQuestionForm.reset(); showModal("投稿完了", "質問が投稿されました。");
-                } catch (error) { showModal("投稿エラー", `失敗しました: ${error.message}`); }
+                } catch (error) { console.error("Error posting question: ", error); showModal("投稿エラー", `質問の投稿に失敗しました: ${error.message}`); }
             });
             const questionsCollectionPath = `artifacts/${appId}/public/data/plazaQuestions`;
             const q = query(collection(db, questionsCollectionPath)); 
-            if (plazaQuestionsListener) plazaQuestionsListener();
+            if (plazaQuestionsListener) { plazaQuestionsListener(); plazaQuestionsListener = null; }
             plazaQuestionsListener = onSnapshot(q, (querySnapshot) => {
-                if (loadingQuestions) loadingQuestions.style.display = 'none';
+                if (loadingQuestions) { loadingQuestions.style.display = 'none'; }
                 questionsList.innerHTML = ''; 
-                if (querySnapshot.empty) { questionsList.innerHTML = '<p class="text-gray-500">まだ質問はありません。</p>'; return; }
+                if (querySnapshot.empty) { questionsList.innerHTML = '<p class="text-gray-500">まだ質問はありません。最初の質問を投稿してみましょう！</p>'; return; }
                 let questions = [];
-                querySnapshot.forEach((doc) => questions.push({ id: doc.id, ...doc.data() }));
+                querySnapshot.forEach((doc) => { questions.push({ id: doc.id, ...doc.data() }); });
                 questions.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
                 questions.forEach((question) => {
                     const item = document.createElement('div'); item.className = 'question-item';
-                    item.innerHTML = `<h3>${question.text.length > 50 ? question.text.substring(0, 50) + '...' : question.text}</h3><p class="meta">投稿者: ${question.authorName || '不明'} | 日時: ${question.createdAt ? new Date(question.createdAt.seconds * 1000).toLocaleString('ja-JP') : '不明'}</p><p class="body">${question.text}</p>`;
-                    questionsList.appendChild(item);
+                    const titleH3 = document.createElement('h3'); titleH3.textContent = question.text.length > 50 ? question.text.substring(0, 50) + '...' : question.text;
+                    const metaP = document.createElement('p'); metaP.className = 'meta'; metaP.textContent = `投稿者: ${question.authorName || '不明'} | 日時: ${question.createdAt ? new Date(question.createdAt.seconds * 1000).toLocaleString('ja-JP') : '不明'}`;
+                    const bodyP = document.createElement('p'); bodyP.className = 'body'; bodyP.textContent = question.text; 
+                    item.appendChild(titleH3); item.appendChild(metaP); item.appendChild(bodyP); questionsList.appendChild(item);
                 });
-            }, (error) => { if (loadingQuestions) loadingQuestions.style.display = 'none'; questionsList.innerHTML = `<p class="text-red-500">質問の読み込み失敗: ${error.message}</p>`; });
+            }, (error) => { 
+                console.error("Error fetching questions: ", error);
+                if (loadingQuestions) { loadingQuestions.style.display = 'none'; }
+                questionsList.innerHTML = `<p class="text-red-500">質問の読み込みに失敗しました。エラー: ${error.message}</p>`;
+            });
         }
 
         // --- Support Page Specific Logic (including Gemini API for advice) ---
@@ -448,6 +575,7 @@
         function initializeEventsPage() {
             const getAiEventsBtn = document.getElementById('get-ai-events-btn');
             if (getAiEventsBtn) getAiEventsBtn.addEventListener('click', getAiEventSuggestions);
+            else console.warn("'get-ai-events-btn' not found on events page init.");
         }
         async function getAiEventSuggestions() {
             const aiEventsArea = document.getElementById('ai-events-area');
@@ -491,15 +619,26 @@
             return events;
         }
 
-        // --- Home Page Specific Logic (Gemini API for Saitama Trivia) ---
+        // --- Home Page Specific Logic (Gemini API for Saitama Trivia & Detail Buttons) ---
         function initializeHomePage() {
             const getNewTriviaBtn = document.getElementById('get-new-trivia-btn');
             if (getNewTriviaBtn) {
                 getNewTriviaBtn.addEventListener('click', getSaitamaTrivia);
-                setTimeout(getSaitamaTrivia, 100); // DOM準備待ちのため少し遅延
+                setTimeout(getSaitamaTrivia, 100); 
             } else {
                 console.warn("'get-new-trivia-btn' not found on home page init.");
             }
+
+            // 「詳しく見る」ボタンのイベントリスナーを設定
+            const detailButtons = document.querySelectorAll('#home .card a.button-secondary[data-page]');
+            detailButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageName = button.dataset.page;
+                    navigateTo(pageName);
+                    window.location.hash = pageName;
+                });
+            });
         }
         async function getSaitamaTrivia() {
             const triviaArea = document.getElementById('saitama-trivia-area');
@@ -536,16 +675,13 @@
             await attemptInitialSignIn();
             const initialPage = window.location.hash.substring(1) || 'home';
             navigateTo(initialPage);
-             // Ensure language dropdown reflects current page if it's a language page
             const langSelect = document.getElementById('language-select');
             if (initialPage === 'easyJapanese' || initialPage === 'english') {
                 langSelect.value = initialPage;
             } else {
-                // If navigating to a non-language specific page (e.g. home, plaza),
-                // ensure the language dropdown is set to "日本語" (home).
                 const currentHash = window.location.hash.substring(1);
                 if (!['easyJapanese', 'english'].includes(currentHash)) {
-                     langSelect.value = 'home'; // 'home' is the value for "日本語"
+                     langSelect.value = 'home';
                 }
             }
         }
