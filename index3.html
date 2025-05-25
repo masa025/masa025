@@ -390,18 +390,51 @@
             navAbout: { ja: "このサイトについて", easyJa: "このさいと について", en: "About This Site" },
             footerPrivacy: { ja: "プライバシーポリシー", easyJa: "ぷらいばしーぽりしー", en: "Privacy Policy" },
             footerTerms: { ja: "利用規約", easyJa: "りようきやく", en: "Terms of Service" },
-            // Support Page Categories
             supportCategoryChildcare: { ja: "子育て・教育", easyJa: "こそだて・きょういく", en: "Childcare & Education" },
             supportCategoryWork: { ja: "仕事・就労", easyJa: "しごと・しゅうろう", en: "Work & Employment" },
             supportCategoryHealth: { ja: "健康・医療", easyJa: "けんこう・いりょう", en: "Health & Medical" },
             supportCategorySenior: { ja: "高齢者支援", easyJa: "こうれいしゃ しえん", en: "Senior Support" },
             supportCategoryHousing: { ja: "住まいの悩み", easyJa: "すまい の なやみ", en: "Housing Issues" },
             supportCategoryForeign: { ja: "外国人住民の方へ", easyJa: "がいこくじん の かた へ", en: "For Foreign Residents" },
-            // Events Page
             eventsAiButton: { ja: "AIに今月のイベント情報を尋ねる", easyJa: "AIに こんげつ の いべんと を きく", en: "Ask AI for This Month's Events" },
             eventsSearchButton: { ja: "イベントを検索", easyJa: "いべんと を さがす", en: "Search Events" },
-            // Share buttons
             sharePageTitle: { ja: "このページを共有", easyJa: "このぺーじ を みんな に おしえる", en: "Share this page" },
+            // SNS共有用テキスト
+            shareTextHome: {
+                ja: "埼玉県の地域情報サイト「彩の国やすらぎウェブ」をチェック！便利な情報がたくさんあります。 #埼玉県 #地域情報",
+                easyJa: "さいたまけん の じょうほうさいと「さいのくに やすらぎ うぇぶ」を みてね！べんりな じょうほう が いっぱい。 #さいたま #ちいきじょうほう",
+                en: "Check out 'Saitama Yasuragi Web' for local info in Saitama! Lots of useful resources. #Saitama #LocalInfo"
+            },
+            shareTextPlaza: {
+                ja: "「彩の国やすらぎウェブ」のみんなの広場（外部掲示板）で情報交換しよう！ #埼玉 #コミュニティ",
+                easyJa: "「さいのくに やすらぎ うぇぶ」の みんなのひろば で じょうほうこうかん しよう！ #さいたま #こみゅにてぃ",
+                en: "Let's exchange information on the 'Community Plaza' (external forum) of Saitama Yasuragi Web! #Saitama #Community"
+            },
+            shareTextSupport: {
+                ja: "埼玉県の困りごと相談・連絡先は「彩の国やすらぎウェブ」で確認。 #埼玉 #相談窓口",
+                easyJa: "さいたまけん の こまりごとそうだん・れんらくさき は「さいのくに やすらぎ うぇぶ」で みてね。 #さいたま #そうだんまどぐち",
+                en: "Find support and useful contacts in Saitama on 'Saitama Yasuragi Web'. #Saitama #Support"
+            },
+            shareTextEvents: {
+                ja: "埼玉県の地域イベント情報を「彩の国やすらぎウェブ」で探そう！ #埼玉 #イベント情報",
+                easyJa: "さいたまけん の ちいきの いべんとじょうほう は「さいのくに やすらぎ うぇぶ」で さがそう！ #さいたま #いべんと",
+                en: "Find local event information in Saitama on 'Saitama Yasuragi Web'! #Saitama #Events"
+            },
+            shareTextAbout: {
+                ja: "「彩の国やすらぎウェブ」について知りたい方はこちら。 #埼玉 #地域サイト",
+                easyJa: "「さいのくに やすらぎ うぇぶ」について しりたいひと は こちら。 #さいたま #ちいきさいと",
+                en: "Learn more about 'Saitama Yasuragi Web'. #Saitama #LocalSite"
+            },
+            shareTextPrivacy: {
+                ja: "「彩の国やすらぎウェブ」のプライバシーポリシーを確認。 #埼玉 #プライバシー",
+                easyJa: "「さいのくに やすらぎ うぇぶ」の ぷらいばしーぽりしー を みてね。 #さいたま #ぷらいばしー",
+                en: "Check the Privacy Policy of 'Saitama Yasuragi Web'. #Saitama #Privacy"
+            },
+            shareTextTerms: {
+                ja: "「彩の国やすらぎウェブ」の利用規約を確認。 #埼玉 #利用規約",
+                easyJa: "「さいのくに やすらぎ うぇぶ」の りようきやく を みてね。 #さいたま #りようきやく",
+                en: "Check the Terms of Service of 'Saitama Yasuragi Web'. #Saitama #Terms"
+            }
         };
 
         function translateUI() {
@@ -426,7 +459,6 @@
             const footerTermsLink = document.getElementById('footer-terms-link');
             if(footerTermsLink) footerTermsLink.textContent = uiTexts.footerTerms[currentLanguage];
 
-            // 共有ボタンのタイトルも翻訳
             const shareTitle = document.getElementById('share-page-title-text');
             if (shareTitle) {
                 shareTitle.textContent = uiTexts.sharePageTitle[currentLanguage] || uiTexts.sharePageTitle.ja;
@@ -849,9 +881,8 @@
             if (!infoArea) return;
 
             let titleText, descriptionText, contactListTitleText, aiButtonText;
-            let categoryDisplayName = categoryName; // デフォルトは渡された名前
+            let categoryDisplayName = categoryName; 
 
-            // uiTextsから翻訳されたカテゴリ名を取得
             const categoryTranslations = uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)];
             if (categoryTranslations && categoryTranslations[currentLanguage]) {
                 categoryDisplayName = categoryTranslations[currentLanguage];
@@ -868,7 +899,7 @@
                 descriptionText = `In Saitama Prefecture, there are various information and services to support those with concerns about "${categoryDisplayName}".`;
                 contactListTitleText = "Example Contacts:";
                 aiButtonText = "Get General Advice from AI ✨";
-            } else { // default to Japanese
+            } else { 
                 titleText = `${categoryDisplayName}の悩み`;
                 descriptionText = `埼玉県では、「${categoryDisplayName}」に関する様々な情報やサービスがあります。お近くの市町村の窓口や、以下の連絡先にご相談ください。`;
                 contactListTitleText = "連絡先の例:";
@@ -1090,29 +1121,42 @@
             if (!shareButtonsContainer) return;
 
             const pageUrl = encodeURIComponent(window.location.href);
-            // ページのタイトルを現在の言語で取得 (より動的に)
-            let pageTitleText = uiTexts.siteTitle[currentLanguage] || "彩の国やすらぎウェブ"; // デフォルトタイトル
-            const currentPageTitleElement = document.querySelector('#main-content h1.text-title');
-            if (currentPageTitleElement && currentPageTitleElement.textContent.trim() !== "") {
-                 pageTitleText = currentPageTitleElement.textContent.trim();
+            
+            let shareText = "";
+            const pageSpecificShareText = uiTexts[`shareText${currentPageKey.charAt(0).toUpperCase() + currentPageKey.slice(1)}`];
+            if (pageSpecificShareText && pageSpecificShareText[currentLanguage]) {
+                shareText = pageSpecificShareText[currentLanguage];
+            } else {
+                // フォールバック: ページタイトル + サイトタイトル
+                let pageTitleText = uiTexts.siteTitle[currentLanguage] || "彩の国やすらぎウェブ"; 
+                const currentPageTitleElement = document.querySelector('#main-content h1.text-title');
+                if (currentPageTitleElement && currentPageTitleElement.textContent.trim() !== "") {
+                     pageTitleText = currentPageTitleElement.textContent.trim();
+                }
+                shareText = `${pageTitleText} - ${uiTexts.siteTitle[currentLanguage] || "彩の国やすらぎウェブ"}`;
             }
-            const pageTitle = encodeURIComponent(pageTitleText);
+            const encodedShareText = encodeURIComponent(shareText);
 
 
             shareButtonsContainer.innerHTML = `
                 <div class="share-buttons-container">
                     <h3 class="text-lg font-semibold mb-3 text-gray-700" id="share-page-title-text">${uiTexts.sharePageTitle[currentLanguage] || uiTexts.sharePageTitle.ja}</h3>
-                    <a href="https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}" target="_blank" rel="noopener noreferrer" class="share-button twitter" aria-label="Xで共有">
+                    <a href="https://twitter.com/intent/tweet?url=${pageUrl}&text=${encodedShareText}" target="_blank" rel="noopener noreferrer" class="share-button twitter" aria-label="Xで共有">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" rel="noopener noreferrer" class="share-button facebook" aria-label="Facebookで共有">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${encodedShareText}" target="_blank" rel="noopener noreferrer" class="share-button facebook" aria-label="Facebookで共有">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="https://social-plugins.line.me/lineit/share?url=${pageUrl}&text=${pageTitle}" target="_blank" rel="noopener noreferrer" class="share-button line" aria-label="LINEで共有">
+                    <a href="https://social-plugins.line.me/lineit/share?url=${pageUrl}&text=${encodedShareText}" target="_blank" rel="noopener noreferrer" class="share-button line" aria-label="LINEで共有">
                         <i class="fab fa-line"></i>
                     </a>
                 </div>
             `;
+            // 共有ボタンセクションのタイトルも翻訳
+            const shareTitleElement = document.getElementById('share-page-title-text');
+            if (shareTitleElement) {
+                 shareTitleElement.textContent = uiTexts.sharePageTitle[currentLanguage] || uiTexts.sharePageTitle.ja;
+            }
         }
 
 
