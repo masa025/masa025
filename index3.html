@@ -11,6 +11,8 @@
         body {
             font-family: 'Noto Sans JP', 'Inter', sans-serif;
             background-color: #fdfaf6; /* やわらかい背景色 */
+            color: #333; /* 基本の文字色 */
+            transition: background-color 0.3s, color 0.3s;
         }
         .header-bg {
             background-color: #FFDEAD; /* ナバホホワイト - 温かみのある色 */
@@ -58,22 +60,33 @@
             @apply fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 p-4;
         }
         .modal-content {
-            @apply bg-white p-8 rounded-lg shadow-xl max-w-md w-full;
+            @apply bg-white p-8 rounded-lg shadow-xl max-w-lg w-full; /* Max width increased for policy */
         }
-        #post-question-form textarea {
-            @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 mb-4;
-            min-height: 100px;
+        .legal-content h2 { /* プライバシーポリシーと利用規約共通のスタイル */
+            @apply text-xl font-semibold text-orange-600 mt-6 mb-3;
         }
-        .question-item, .event-item-ai {
+        .legal-content p, .legal-content ul, .legal-content ol {
+            @apply mb-3 text-gray-700 leading-relaxed;
+        }
+        .legal-content ul, .legal-content ol { /* ol も対象に追加 */
+            @apply list-inside ml-4;
+        }
+        .legal-content ul { @apply list-disc; }
+        .legal-content ol { @apply list-decimal; } /* 番号付きリストのスタイル */
+        .legal-content strong {
+            @apply font-semibold;
+        }
+
+        .event-item-ai {
             @apply border p-4 rounded-lg bg-gray-50 mb-4;
         }
-        .question-item h3, .event-item-ai h3 {
+        .event-item-ai h3 {
             @apply font-semibold text-orange-600 mb-1;
         }
-        .question-item .meta, .event-item-ai .meta  {
+        .event-item-ai .meta  {
             @apply text-sm text-gray-500 mb-2;
         }
-        .question-item .body, .event-item-ai .body {
+        .event-item-ai .body {
             @apply text-gray-700 whitespace-pre-wrap;
         }
         #ai-advice-area, #ai-events-area, #saitama-trivia-area { /* AI表示エリア共通 */
@@ -85,6 +98,139 @@
         .trivia-card { /* 豆知識表示用カード */
             @apply bg-yellow-50 border border-yellow-300 p-6 rounded-xl shadow-lg mt-8;
         }
+        .contact-list li {
+            @apply border-b border-gray-200 py-3;
+        }
+        .contact-list li:last-child {
+            @apply border-b-0;
+        }
+        .contact-list strong {
+            @apply font-semibold text-gray-800;
+        }
+        .contact-list a {
+            @apply text-orange-600 hover:underline;
+        }
+
+
+        /* --- High Contrast Mode Styles --- */
+        body.high-contrast-mode {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        body.high-contrast-mode .header-bg,
+        body.high-contrast-mode .footer-bg {
+            background-color: #111111 !important;
+            border-bottom: 1px solid #ffff00;
+        }
+        body.high-contrast-mode .footer-bg {
+            border-top: 1px solid #ffff00;
+            border-bottom: none;
+        }
+        body.high-contrast-mode a,
+        body.high-contrast-mode .nav-link,
+        body.high-contrast-mode .contact-list a { /* 連絡先リストのリンクも対象に */
+            color: #ffff00 !important;
+        }
+        body.high-contrast-mode .nav-link:hover,
+        body.high-contrast-mode .contact-list a:hover {
+            color: #000000 !important;
+            background-color: #ffff00 !important;
+        }
+        body.high-contrast-mode .nav-link-active {
+            color: #000000 !important;
+            background-color: #ffff00 !important;
+            font-weight: bold;
+        }
+        body.high-contrast-mode .text-orange-700, 
+        body.high-contrast-mode .text-yellow-700,
+        body.high-contrast-mode .text-teal-700,
+        body.high-contrast-mode .text-orange-600,
+        body.high-contrast-mode .text-orange-500
+        {
+            color: #ffff00 !important;
+        }
+         body.high-contrast-mode .text-gray-700,
+         body.high-contrast-mode .text-gray-800,
+         body.high-contrast-mode .text-gray-600,
+         body.high-contrast-mode .text-gray-500,
+         body.high-contrast-mode .contact-list strong { /* 連絡先リストの太字も調整 */
+            color: #dddddd !important;
+         }
+        body.high-contrast-mode .card,
+        body.high-contrast-mode .modal-content,
+        body.high-contrast-mode #accessibility-panel,
+        body.high-contrast-mode .bg-orange-50, 
+        body.high-contrast-mode .bg-yellow-50,
+        body.high-contrast-mode .bg-teal-50,
+        body.high-contrast-mode .event-item-ai,
+        body.high-contrast-mode .contact-list li /* 連絡先リストの背景 */
+         {
+            background-color: #1a1a1a !important;
+            border: 1px solid #ffff00 !important;
+            color: #ffffff !important;
+        }
+         body.high-contrast-mode .contact-list li {
+            border-color: #444444 !important; /* 区切り線の色調整 */
+         }
+        body.high-contrast-mode .button-primary {
+            background-color: #ffff00 !important;
+            color: #000000 !important;
+            border: 1px solid #000000 !important;
+        }
+        body.high-contrast-mode .button-primary:hover {
+            background-color: #dddd00 !important;
+        }
+        body.high-contrast-mode .button-secondary,
+        body.high-contrast-mode .button-ai {
+            background-color: #000000 !important;
+            color: #ffff00 !important;
+            border: 1px solid #ffff00 !important;
+        }
+        body.high-contrast-mode .button-secondary:hover,
+        body.high-contrast-mode .button-ai:hover {
+            background-color: #333333 !important;
+        }
+        body.high-contrast-mode .button-ai[disabled] {
+             background-color: #222222 !important;
+             color: #777777 !important;
+             border-color: #777777 !important;
+        }
+        body.high-contrast-mode input[type="text"],
+        body.high-contrast-mode input[type="date"],
+        body.high-contrast-mode textarea, 
+        body.high-contrast-mode select {
+            background-color: #111111 !important;
+            color: #ffffff !important;
+            border: 1px solid #ffff00 !important;
+        }
+        body.high-contrast-mode input::placeholder {
+            color: #bbbbbb !important;
+        }
+        body.high-contrast-mode .icon-style {
+            color: #ffff00 !important;
+        }
+        body.high-contrast-mode .bg-gradient-to-r {
+            background-image: none !important;
+            background-color: #111111 !important;
+        }
+        body.high-contrast-mode #saitama-trivia-loading,
+        body.high-contrast-mode #ai-events-loading,
+        body.high-contrast-mode #ai-advice-loading,
+        body.high-contrast-mode #loading-questions { /* Firestore Q&A用ローディング */
+            color: #cccccc !important;
+        }
+        body.high-contrast-mode .text-white {
+             color: #ffffff !important;
+        }
+        body.high-contrast-mode #close-accessibility-panel i,
+        body.high-contrast-mode #mobile-menu-button i,
+        body.high-contrast-mode #accessibility-toggle i {
+            color: #ffff00 !important;
+        }
+        body.high-contrast-mode #accessibility-panel .text-gray-700,
+        body.high-contrast-mode #accessibility-panel .text-gray-600 {
+            color: #ffffff !important;
+        }
     </style>
 </head>
 <body class="text-gray-800 leading-relaxed">
@@ -92,7 +238,7 @@
     <header class="header-bg shadow-md sticky top-0 z-40">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <a href="#home" class="text-3xl font-bold text-orange-700">彩の国やすらぎウェブ</a>
+                <a href="#home" id="site-title-link" class="text-3xl font-bold text-orange-700">彩の国やすらぎウェブ</a>
                 <nav class="hidden md:flex space-x-2">
                     <a href="#home" class="nav-link nav-link-active" data-page="home">ホーム</a>
                     <a href="#plaza" class="nav-link" data-page="plaza">みんなの広場</a>
@@ -120,12 +266,16 @@
         <h3 class="text-lg font-semibold mb-3 text-gray-700">表示設定</h3>
         <div class="space-y-3">
             <div><label for="font-size-slider" class="block text-sm font-medium text-gray-700">文字サイズ:</label><input type="range" id="font-size-slider" min="80" max="150" value="100" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"><span id="font-size-value" class="text-sm text-gray-600">標準 (100%)</span></div>
-            <div><label class="block text-sm font-medium text-gray-700">コントラスト:</label><button id="contrast-toggle" class="w-full button-secondary text-sm py-2">ハイコントラスト (準備中)</button></div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">コントラスト:</label>
+                <button id="contrast-toggle" class="w-full button-secondary text-sm py-2">ハイコントラストにする</button>
+            </div>
             <div>
                 <label for="language-select" class="block text-sm font-medium text-gray-700">言語選択:</label>
                 <select id="language-select" class="w-full mt-1 block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md">
-                    <option value="home">日本語</option> <option value="easyJapanese">やさしい日本語</option>
-                    <option value="english">English</option>
+                    <option value="ja">日本語</option> 
+                    <option value="easyJa">やさしい日本語</option>
+                    <option value="en">English</option>
                 </select>
             </div>
         </div>
@@ -136,8 +286,11 @@
     <footer class="footer-bg py-12 mt-16">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-700">
             <p>あなたのユーザーID: <span id="user-id-display" class="font-semibold">未認証</span></p>
-            <p class="mt-1">&copy; <span id="current-year"></span> 彩の国やすらぎウェブ. All rights reserved.</p>
-            <p class="mt-2 text-sm"><a href="#privacy" class="hover:text-orange-600" data-page="privacy">プライバシーポリシー</a> | <a href="#terms" class="hover:text-orange-600" data-page="terms">利用規約</a></p>
+            <p class="mt-1">&copy; <span id="current-year"></span> <span id="footer-site-name">彩の国やすらぎウェブ</span>. All rights reserved.</p>
+            <p class="mt-2 text-sm">
+                <a href="#privacy" class="hover:text-orange-600" data-page="privacy" id="footer-privacy-link">プライバシーポリシー</a> | 
+                <a href="#terms" class="hover:text-orange-600" data-page="terms" id="footer-terms-link">利用規約</a>
+            </p>
         </div>
     </footer>
 
@@ -146,44 +299,42 @@
     </div>
 
     <script type="module">
-        // Firebase SDKのインポート
+        // Firebase SDKのインポート (Authのみ利用)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- Firebase Configuration ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "YOUR_API_KEY", authDomain: "YOUR_AUTH_DOMAIN", projectId: "YOUR_PROJECT_ID" };
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'saitama-community-website';
-
-        // --- Firebase Initialization ---
-        let app, auth, db, userId, plazaQuestionsListener = null;
+        
+        // --- Firebase Initialization (Authのみ) ---
+        let app, auth, userId; 
         try {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
-            db = getFirestore(app);
-            console.log("Firebase Initialized");
+            console.log("Firebase App and Auth Initialized");
         } catch (error) {
             console.error("Firebase Initialization Error:", error);
-            showModal("エラー", "データベースの初期化に失敗しました。");
+            showModal("エラー", "認証システムの初期化に失敗しました。");
         }
         
+        // --- Global State ---
+        let currentLanguage = 'ja'; // 初期言語は日本語
+        let currentPageKey = 'home'; // 初期ページキー
+
         // --- Authentication ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 userId = user.uid;
                 document.getElementById('user-id-display').textContent = userId;
-                const currentPage = window.location.hash.substring(1) || 'home';
-                // Initialize page specific features if on that page
-                if (currentPage === 'plaza') loadPlazaFeatures();
-                if (currentPage === 'home') initializeHomePage(); 
-                if (currentPage === 'events') initializeEventsPage();
             } else {
-                userId = crypto.randomUUID();
-                document.getElementById('user-id-display').textContent = `一時ID: ${userId.substring(0,8)}...`;
-                if (typeof __initial_auth_token === 'undefined') {
+                userId = crypto.randomUUID(); 
+                document.getElementById('user-id-display').textContent = `一時ID`;
+                if (typeof __initial_auth_token === 'undefined') { 
                     signInAnonymously(auth).catch((error) => console.error("Anonymous sign-in error:", error));
                 }
             }
+            // 認証状態が変わった後、現在のページを再描画して言語設定を反映
+            navigateTo(currentPageKey); 
         });
 
         // --- Initial Sign-in Attempt ---
@@ -200,101 +351,373 @@
             }
         }
 
+        // --- UI Text Translations ---
+        const uiTexts = {
+            siteTitle: { ja: "彩の国やすらぎウェブ", easyJa: "さいのくに やすらぎ うぇぶ", en: "Saitama Yasuragi Web" },
+            navHome: { ja: "ホーム", easyJa: "ほーむ", en: "Home" },
+            navPlaza: { ja: "みんなの広場", easyJa: "みんなの ひろば", en: "Community Plaza" },
+            navSupport: { ja: "困りごと相談", easyJa: "こまりごと そうだん", en: "Support & Consultation" },
+            navEvents: { ja: "地域のイベント", easyJa: "ちいきの いべんと", en: "Local Events" },
+            navAbout: { ja: "このサイトについて", easyJa: "このさいと について", en: "About This Site" },
+            footerPrivacy: { ja: "プライバシーポリシー", easyJa: "ぷらいばしーぽりしー", en: "Privacy Policy" },
+            footerTerms: { ja: "利用規約", easyJa: "りようきやく", en: "Terms of Service" },
+            // Support Page Categories
+            supportCategoryChildcare: { ja: "子育て・教育", easyJa: "こそだて・きょういく", en: "Childcare & Education" },
+            supportCategoryWork: { ja: "仕事・就労", easyJa: "しごと・しゅうろう", en: "Work & Employment" },
+            supportCategoryHealth: { ja: "健康・医療", easyJa: "けんこう・いりょう", en: "Health & Medical" },
+            supportCategorySenior: { ja: "高齢者支援", easyJa: "こうれいしゃ しえん", en: "Senior Support" },
+            supportCategoryHousing: { ja: "住まいの悩み", easyJa: "すまい の なやみ", en: "Housing Issues" },
+            supportCategoryForeign: { ja: "外国人住民の方へ", easyJa: "がいこくじん の かた へ", en: "For Foreign Residents" },
+            // Events Page
+            eventsAiButton: { ja: "AIに今月のイベント情報を尋ねる", easyJa: "AIに こんげつ の いべんと を きく", en: "Ask AI for This Month's Events" },
+            eventsSearchButton: { ja: "イベントを検索", easyJa: "いべんと を さがす", en: "Search Events" },
+        };
+
+        function translateUI() {
+            document.title = `${uiTexts.siteTitle[currentLanguage]} - 埼玉県民のための情報交換・支援サイト`;
+            const siteTitleLink = document.getElementById('site-title-link');
+            if(siteTitleLink) siteTitleLink.textContent = uiTexts.siteTitle[currentLanguage];
+            
+            const navLinksAll = document.querySelectorAll('header nav a[data-page], #mobile-menu a[data-page]');
+            navLinksAll.forEach(link => {
+                const pageKey = link.dataset.page;
+                if (pageKey === 'home' && uiTexts.navHome[currentLanguage]) link.textContent = uiTexts.navHome[currentLanguage];
+                if (pageKey === 'plaza' && uiTexts.navPlaza[currentLanguage]) link.textContent = uiTexts.navPlaza[currentLanguage];
+                if (pageKey === 'support' && uiTexts.navSupport[currentLanguage]) link.textContent = uiTexts.navSupport[currentLanguage];
+                if (pageKey === 'events' && uiTexts.navEvents[currentLanguage]) link.textContent = uiTexts.navEvents[currentLanguage];
+                if (pageKey === 'about' && uiTexts.navAbout[currentLanguage]) link.textContent = uiTexts.navAbout[currentLanguage];
+            });
+
+            const footerSiteName = document.getElementById('footer-site-name');
+            if(footerSiteName) footerSiteName.textContent = uiTexts.siteTitle[currentLanguage];
+            const footerPrivacyLink = document.getElementById('footer-privacy-link');
+            if(footerPrivacyLink) footerPrivacyLink.textContent = uiTexts.footerPrivacy[currentLanguage];
+            const footerTermsLink = document.getElementById('footer-terms-link');
+            if(footerTermsLink) footerTermsLink.textContent = uiTexts.footerTerms[currentLanguage];
+        }
+
+
         // --- Page Content Definitions ---
         const pageContents = {
-            home: `
-                <section id="home" class="text-center">
-                    <div class="bg-gradient-to-r from-orange-400 to-yellow-300 py-20 px-6 rounded-xl shadow-2xl mb-16">
-                        <h1 class="text-5xl font-bold text-white mb-6">ようこそ、彩の国やすらぎウェブへ</h1>
-                        <p class="text-xl text-white mb-10">埼玉県民みんなで支え合い、情報を共有し、安心して暮らせる地域をつくるためのサイトです。</p>
-                        <a href="#support" data-page="support" class="button-primary text-xl px-10 py-4 inline-block">お困りごとはこちら</a>
-                    </div>
-                    <div class="trivia-card mb-16">
-                        <h2 class="text-subtitle text-yellow-700"><i class="fas fa-lightbulb mr-2"></i>今日の埼玉県の豆知識 ✨</h2>
-                        <div id="saitama-trivia-area" class="min-h-[8rem]">
-                            <p id="saitama-trivia-loading" class="text-gray-500">AIが豆知識を探しています...</p>
-                            <div id="saitama-trivia-content" class="text-lg text-gray-700"></div>
+            home: {
+                ja: `
+                    <section id="home" class="text-center">
+                        <div class="bg-gradient-to-r from-orange-400 to-yellow-300 py-20 px-6 rounded-xl shadow-2xl mb-16">
+                            <h1 class="text-5xl font-bold text-white mb-6">ようこそ、彩の国やすらぎウェブへ</h1>
+                            <p class="text-xl text-white mb-10">埼玉県民みんなで支え合い、情報を共有し、安心して暮らせる地域をつくるためのサイトです。</p>
+                            <a href="#support" data-page="support" class="button-primary text-xl px-10 py-4 inline-block" id="hero-support-link">お困りごとはこちら</a>
                         </div>
-                        <button id="get-new-trivia-btn" class="button-ai mt-4 bg-yellow-500 hover:bg-yellow-600">
-                            <i class="fas fa-sync-alt mr-2"></i>新しい豆知識を見る
-                        </button>
-                         <p class="text-xs text-gray-500 mt-3">※AIが生成した情報です。内容の正確性は保証されません。</p>
-                    </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
-                        <div class="card text-center"><i class="fas fa-users icon-style"></i><h2 class="text-subtitle">みんなの広場</h2><p class="text-gray-600 mb-4">質問や相談、地域の情報を交換しましょう。</p><a href="#plaza" data-page="plaza" class="button-secondary">詳しく見る</a></div>
-                        <div class="card text-center"><i class="fas fa-hands-helping icon-style"></i><h2 class="text-subtitle">困りごと相談</h2><p class="text-gray-600 mb-4">生活の悩みや不安を相談できる窓口情報。</p><a href="#support" data-page="support" class="button-secondary">詳しく見る</a></div>
-                        <div class="card text-center"><i class="fas fa-calendar-alt icon-style"></i><h2 class="text-subtitle">地域のイベント</h2><p class="text-gray-600 mb-4">埼玉県内のイベントや講座情報。</p><a href="#events" data-page="events" class="button-secondary">詳しく見る</a></div>
-                    </div>
-                    <div class="card bg-orange-50"><h2 class="text-subtitle text-orange-700">お知らせ</h2><ul class="list-disc list-inside text-left text-gray-700 space-y-2"><li><span class="font-semibold">[2025/05/24]</span> 彩の国やすらぎウェブがオープンしました！</li></ul></div>
-                </section>
-            `,
-            plaza: `
-                <section id="plaza">
-                    <h1 class="text-title">みんなの広場</h1><p class="text-lg text-gray-700 mb-8">住民のみなさんが情報交換をしたり、質問や相談をしたりできる場所です。</p>
-                    <div class="card mb-10"><h2 class="text-subtitle">新しい質問を投稿する</h2><form id="post-question-form"><div><label for="question-text" class="block text-sm font-medium text-gray-700 mb-1">質問内容:</label><textarea id="question-text" name="questionText" rows="4" required placeholder="ここに質問を入力してください..."></textarea></div><button type="submit" class="button-primary">質問を投稿する</button></form></div>
-                    <div><h2 class="text-subtitle">みんなの質問・相談</h2><div id="questions-list" class="space-y-4"><p id="loading-questions" class="text-gray-500">質問を読み込んでいます...</p></div></div>
-                </section>
-            `,
-            support: `
-                <section id="support">
-                    <h1 class="text-title">困りごと相談</h1><p class="text-lg text-gray-700 mb-8">生活の中でのさまざまな「困った」「どうしよう」を解決するためのお手伝いをします。</p>
-                    <div class="mb-12"><h2 class="text-subtitle">お困りごとナビ</h2><p class="text-gray-600 mb-6">あなたの状況に近いものを選択してください。</p>
-                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('childcare', '子育て・教育')"><i class="fas fa-child icon-style"></i><h3 class="font-semibold text-xl text-gray-800">子育て・教育</h3><p class="text-sm text-gray-600">保育園、学校など</p></button>
-                            <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('work', '仕事・就労')"><i class="fas fa-briefcase icon-style"></i><h3 class="font-semibold text-xl text-gray-800">仕事・就労</h3><p class="text-sm text-gray-600">求職、キャリア相談など</p></button>
-                            <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('health', '健康・医療')"><i class="fas fa-heartbeat icon-style"></i><h3 class="font-semibold text-xl text-gray-800">健康・医療</h3><p class="text-sm text-gray-600">病院検索、心のケアなど</p></button>
-                            <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('senior', '高齢者支援')"><i class="fas fa-users icon-style"></i><h3 class="font-semibold text-xl text-gray-800">高齢者支援</h3><p class="text-sm text-gray-600">介護、見守りなど</p></button>
-                            <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('housing', '住まいの悩み')"><i class="fas fa-home icon-style"></i><h3 class="font-semibold text-xl text-gray-800">住まいの悩み</h3><p class="text-sm text-gray-600">公営住宅、空き家など</p></button>
-                            <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('foreign', '外国人住民の方へ')"><i class="fas fa-globe icon-style"></i><h3 class="font-semibold text-xl text-gray-800">外国人住民の方へ</h3><p class="text-sm text-gray-600">生活相談、日本語学習など</p></button>
+                        <div class="trivia-card mb-16">
+                            <h2 class="text-subtitle text-yellow-700"><i class="fas fa-lightbulb mr-2"></i>今日の埼玉県の豆知識 ✨</h2>
+                            <div id="saitama-trivia-area" class="min-h-[8rem]">
+                                <p id="saitama-trivia-loading" class="text-gray-500">AIが豆知識を探しています...</p>
+                                <div id="saitama-trivia-content" class="text-lg text-gray-700"></div>
+                            </div>
+                            <button id="get-new-trivia-btn" class="button-ai mt-4 bg-yellow-500 hover:bg-yellow-600">
+                                <i class="fas fa-sync-alt mr-2"></i>新しい豆知識を見る
+                            </button>
+                             <p class="text-xs text-gray-500 mt-3">※AIが生成した情報です。内容の正確性は保証されません。</p>
                         </div>
-                        <div id="support-info-area" class="mt-8 p-6 bg-orange-50 rounded-lg hidden"></div>
-                    </div>
-                </section>
-            `,
-            events: `
-                <section id="events">
-                    <h1 class="text-title">地域のイベント</h1><p class="text-lg text-gray-700 mb-8">埼玉県内で開催されるさまざまなイベント情報をお届けします。AIに今月のイベント情報を尋ねてみましょう！</p>
-                    <div class="mb-10 card"><h2 class="text-subtitle">AIによる今月のイベント提案 ✨</h2><button id="get-ai-events-btn" class="button-ai w-full sm:w-auto">AIに今月のイベント情報を尋ねる</button><div id="ai-events-area" class="mt-6 hidden min-h-[10rem]"><p id="ai-events-loading" class="text-gray-500">AIがイベント情報を探しています...</p><div id="ai-events-content-list"></div><p class="text-xs text-gray-500 mt-4">※AIによる提案であり、情報が最新でない場合や変更されている場合があります。詳細は必ず公式サイト等でご確認ください。</p></div></div>
-                    <div class="mb-8"><h2 class="text-subtitle">イベントを手動で探す</h2><div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6"><input type="text" placeholder="キーワードで検索 (例: 祭り)" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 col-span-full md:col-span-2"><select class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"><option>カテゴリ選択</option></select><input type="date" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></div><button class="button-primary" onclick="showModal('検索機能','この検索機能は現在開発中です。')">イベントを検索</button></div>
-                    <div><h2 class="text-subtitle">主な年間イベント (参考)</h2><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="card"><img src="https://placehold.co/600x400/FFDAB9/4A2311?text=川越まつり" alt="川越まつりのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">川越まつり</h3><p class="text-sm text-gray-500">10月</p></div><div class="card"><img src="https://placehold.co/600x400/A0E6C4/2B4A3C?text=鉄道博物館イベント" alt="鉄道博物館イベントのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">鉄道博物館 イベント</h3><p class="text-sm text-gray-500">随時</p></div><div class="card"><img src="https://placehold.co/600x400/F0E68C/4A2311?text=秩父夜祭" alt="秩父夜祭のイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">秩父夜祭</h3><p class="text-sm text-gray-500">12月</p></div></div></div>
-                </section>
-            `,
-            about: `
-                <section id="about"><h1 class="text-title">このサイトについて</h1><div class="card"><p class="text-lg text-gray-700">「彩の国やすらぎウェブ」は、埼玉県民のための情報交換と支援のプラットフォームです。皆さまの生活がより豊かで安心できるものになるよう、様々な情報や機能を提供してまいります。</p></div></section>
-            `,
-            privacy: `
-                <section id="privacy"><h1 class="text-title">プライバシーポリシー (仮)</h1><div class="card"><p class="text-gray-700">彩の国やすらぎウェブ（以下、「当サイト」といいます。）は、個人情報の保護に関する法律（以下、「個人情報保護法」といいます。）を遵守するとともに、以下のプライバシーポリシーに従い、適切な取扱い及び保護に努めます。（ここに詳細なプライバシーポリシーが続きます。）</p></div></section>
-            `,
-            terms: `
-                <section id="terms"><h1 class="text-title">利用規約 (仮)</h1><div class="card"><p class="text-gray-700">この利用規約（以下、「本規約」といいます。）は、彩の国やすらぎウェブ（以下、「当サイト」といいます。）が提供するサービスの利用条件を定めるものです。ユーザーの皆さま（以下、「ユーザー」といいます。）には、本規約に従って、本サービスをご利用いただきます。（ここに詳細な利用規約が続きます。）</p></div></section>
-            `,
-            easyJapanese: `
-                <section id="easy-japanese">
-                    <h1 class="text-title">やさしい にほんご の ページ</h1>
-                    <div class="card">
-                        <p class="text-lg text-gray-700 mb-4">この ぺーじ は、 やさしい にほんご で つくって います。</p>
-                        <p class="text-lg text-gray-700 mb-4">いま、 みんな が よみやすいように じゅんび を して います。 もう すこし まってください。</p>
-                        <p class="text-lg text-gray-700">いろいろな おしらせ や べんりな こと を、 やさしい にほんご で おしらせ します。</p>
-                        <p class="text-lg text-gray-700 mt-6">Hello! This page is for "Easy Japanese". We are preparing contents to make it easy for everyone to read. Please wait a little longer.</p>
-                    </div>
-                </section>
-            `,
-            english: `
-                <section id="english-page">
-                    <h1 class="text-title">English Page</h1>
-                    <div class="card">
-                        <p class="text-lg text-gray-700 mb-4">Welcome to the English information page for "Saitama Yasuragi Web".</p>
-                        <p class="text-lg text-gray-700 mb-4">We are currently preparing content in English to provide useful information for English-speaking residents and visitors in Saitama Prefecture.</p>
-                        <p class="text-lg text-gray-700 mb-4">Please check back later for updates. We appreciate your patience.</p>
-                        <p class="text-lg text-gray-700 mt-6">こんにちは！このページは「彩の国やすらぎウェブ」の英語案内ページです。現在、埼玉県にお住まい、または訪問される英語話者の方向けに、役立つ情報を英語で提供できるよう準備を進めています。更新まで今しばらくお待ちください。</p>
-                    </div>
-                </section>
-            `
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+                            <div class="card text-center"><i class="fas fa-users icon-style"></i><h2 class="text-subtitle">みんなの広場</h2><p class="text-gray-600 mb-4">外部掲示板で情報交換ができます。</p><a href="#plaza" data-page="plaza" class="button-secondary">詳しく見る</a></div>
+                            <div class="card text-center"><i class="fas fa-hands-helping icon-style"></i><h2 class="text-subtitle">困りごと相談</h2><p class="text-gray-600 mb-4">生活の悩みや不安を相談できる窓口情報。</p><a href="#support" data-page="support" class="button-secondary">詳しく見る</a></div>
+                            <div class="card text-center"><i class="fas fa-calendar-alt icon-style"></i><h2 class="text-subtitle">地域のイベント</h2><p class="text-gray-600 mb-4">埼玉県内のイベントや講座情報。</p><a href="#events" data-page="events" class="button-secondary">詳しく見る</a></div>
+                        </div>
+                        <div class="card bg-orange-50"><h2 class="text-subtitle text-orange-700">お知らせ</h2><ul class="list-disc list-inside text-left text-gray-700 space-y-2"><li><span class="font-semibold">[2025/05/24]</span> 彩の国やすらぎウェブがオープンしました！</li></ul></div>
+                    </section>
+                `,
+                easyJa: `
+                    <section id="home" class="text-center">
+                        <div class="bg-gradient-to-r from-orange-400 to-yellow-300 py-20 px-6 rounded-xl shadow-2xl mb-16">
+                            <h1 class="text-5xl font-bold text-white mb-6">ようこそ、さいのくに やすらぎ うぇぶ へ</h1>
+                            <p class="text-xl text-white mb-10">さいたまけん の みんな で ささえあい、じょうほう を きょうゆう し、あんしん して くらせる ちいき を つくる ための さいと です。</p>
+                            <a href="#support" data-page="support" class="button-primary text-xl px-10 py-4 inline-block" id="hero-support-link">こまった こと は こちら</a>
+                        </div>
+                        <div class="trivia-card mb-16">
+                             <h2 class="text-subtitle text-yellow-700"><i class="fas fa-lightbulb mr-2"></i>きょう の さいたまけん の まめちしき ✨</h2>
+                            <div id="saitama-trivia-area" class="min-h-[8rem]">
+                                <p id="saitama-trivia-loading" class="text-gray-500">AIが まめちしき を さがしています...</p>
+                                <div id="saitama-trivia-content" class="text-lg text-gray-700"></div>
+                            </div>
+                            <button id="get-new-trivia-btn" class="button-ai mt-4 bg-yellow-500 hover:bg-yellow-600">
+                                <i class="fas fa-sync-alt mr-2"></i>あたらしい まめちしき を みる
+                            </button>
+                             <p class="text-xs text-gray-500 mt-3">※AIが つくった じょうほう です。ただしいか どうか わかりません。</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+                            <div class="card text-center"><i class="fas fa-users icon-style"></i><h2 class="text-subtitle">みんなの ひろば</h2><p class="text-gray-600 mb-4">そと の けいじばん で じょうほうこうかん が できます。</p><a href="#plaza" data-page="plaza" class="button-secondary">くわしく みる</a></div>
+                            <div class="card text-center"><i class="fas fa-hands-helping icon-style"></i><h2 class="text-subtitle">こまりごと そうだん</h2><p class="text-gray-600 mb-4">せいかつ の なやみ や ふあん を そうだん できる まどぐち の じょうほう。</p><a href="#support" data-page="support" class="button-secondary">くわしく みる</a></div>
+                            <div class="card text-center"><i class="fas fa-calendar-alt icon-style"></i><h2 class="text-subtitle">ちいきの いべんと</h2><p class="text-gray-600 mb-4">さいたまけん の いべんと や こうざ の じょうほう。</p><a href="#events" data-page="events" class="button-secondary">くわしく みる</a></div>
+                        </div>
+                        <div class="card bg-orange-50"><h2 class="text-subtitle text-orange-700">おしらせ</h2><ul class="list-disc list-inside text-left text-gray-700 space-y-2"><li><span class="font-semibold">[2025/05/24]</span> さいのくに やすらぎ うぇぶ が おーぷん しました！</li></ul></div>
+                    </section>
+                `,
+                en: `
+                    <section id="home" class="text-center">
+                        <div class="bg-gradient-to-r from-orange-400 to-yellow-300 py-20 px-6 rounded-xl shadow-2xl mb-16">
+                            <h1 class="text-5xl font-bold text-white mb-6">Welcome to Saitama Yasuragi Web</h1>
+                            <p class="text-xl text-white mb-10">This is a site for Saitama residents to support each other, share information, and create a community where everyone can live with peace of mind.</p>
+                            <a href="#support" data-page="support" class="button-primary text-xl px-10 py-4 inline-block" id="hero-support-link">Need Help? Click Here</a>
+                        </div>
+                         <div class="trivia-card mb-16">
+                            <h2 class="text-subtitle text-yellow-700"><i class="fas fa-lightbulb mr-2"></i>Today's Saitama Trivia ✨</h2>
+                            <div id="saitama-trivia-area" class="min-h-[8rem]">
+                                <p id="saitama-trivia-loading" class="text-gray-500">AI is searching for trivia...</p>
+                                <div id="saitama-trivia-content" class="text-lg text-gray-700"></div>
+                            </div>
+                            <button id="get-new-trivia-btn" class="button-ai mt-4 bg-yellow-500 hover:bg-yellow-600">
+                                <i class="fas fa-sync-alt mr-2"></i>See New Trivia
+                            </button>
+                             <p class="text-xs text-gray-500 mt-3">*Information generated by AI. Accuracy is not guaranteed.</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+                            <div class="card text-center"><i class="fas fa-users icon-style"></i><h2 class="text-subtitle">Community Plaza</h2><p class="text-gray-600 mb-4">Exchange information on the external bulletin board.</p><a href="#plaza" data-page="plaza" class="button-secondary">Learn More</a></div>
+                            <div class="card text-center"><i class="fas fa-hands-helping icon-style"></i><h2 class="text-subtitle">Support & Consultation</h2><p class="text-gray-600 mb-4">Information on consultation services for life's worries.</p><a href="#support" data-page="support" class="button-secondary">Learn More</a></div>
+                            <div class="card text-center"><i class="fas fa-calendar-alt icon-style"></i><h2 class="text-subtitle">Local Events</h2><p class="text-gray-600 mb-4">Information on events and courses in Saitama.</p><a href="#events" data-page="events" class="button-secondary">Learn More</a></div>
+                        </div>
+                        <div class="card bg-orange-50"><h2 class="text-subtitle text-orange-700">Announcements</h2><ul class="list-disc list-inside text-left text-gray-700 space-y-2"><li><span class="font-semibold">[2025/05/24]</span> Saitama Yasuragi Web is now open!</li></ul></div>
+                    </section>
+                `
+            },
+            plaza: { // みんなの広場
+                ja: `
+                    <section id="plaza">
+                        <h1 class="text-title">みんなの広場 (外部掲示板)</h1>
+                        <div class="card">
+                            <p class="text-lg text-gray-700 mb-4">「みんなの広場」では、住民の皆さまが情報交換をしたり、質問や相談をしたりできる場として、外部の掲示板サービスをご案内しています。</p>
+                            <p class="text-lg text-gray-700 mb-6">以下のリンクから専用掲示板「彩の国やすらぎ広場」にアクセスして、情報交換や交流にご活用ください。</p>
+                            <a href="https://www.z-z.jp/?saitama012" target="_blank" rel="noopener noreferrer" class="button-primary inline-flex items-center"><i class="fas fa-external-link-alt mr-2"></i>彩の国やすらぎ広場 掲示板へ</a>
+                            <p class="text-sm text-gray-600 mt-4">（外部サイト「Z-Z BOARD」を利用しています。ご利用の際は、リンク先の利用規約等をご確認ください。）</p>
+                        </div>
+                    </section>
+                `,
+                easyJa: `
+                    <section id="plaza">
+                        <h1 class="text-title">みんなの ひろば (そと の けいじばん)</h1>
+                        <div class="card">
+                            <p class="text-lg text-gray-700 mb-4">「みんなの ひろば」では、みんな が じょうほう を こうかん したり、しつもん や そうだん を したり できる ばしょ として、そと の けいじばん さーびす を あんない して います。</p>
+                            <p class="text-lg text-gray-700 mb-6">した の りんく から けいじばん「さいのくに やすらぎ ひろば」に あくせす して、じょうほうこうかん や こうりゅう に つかって ください。</p>
+                            <a href="https://www.z-z.jp/?saitama012" target="_blank" rel="noopener noreferrer" class="button-primary inline-flex items-center"><i class="fas fa-external-link-alt mr-2"></i>さいのくに やすらぎ ひろば けいじばん へ</a>
+                            <p class="text-sm text-gray-600 mt-4">（そと の さいと「Z-Z BOARD」を つかいます。つかう とき は、りんくさき の りようきやく など を みて ください。）</p>
+                        </div>
+                    </section>
+                `,
+                en: `
+                    <section id="plaza">
+                        <h1 class="text-title">Community Plaza (External Forum)</h1>
+                        <div class="card">
+                            <p class="text-lg text-gray-700 mb-4">The "Community Plaza" guides you to an external bulletin board service as a place for residents to exchange information, ask questions, and consult.</p>
+                            <p class="text-lg text-gray-700 mb-6">Please access the dedicated bulletin board "Saitama Yasuragi Plaza" from the link below to exchange information and interact.</p>
+                            <a href="https://www.z-z.jp/?saitama012" target="_blank" rel="noopener noreferrer" class="button-primary inline-flex items-center"><i class="fas fa-external-link-alt mr-2"></i>To Saitama Yasuragi Plaza Forum</a>
+                            <p class="text-sm text-gray-600 mt-4">(Uses the external site "Z-Z BOARD". Please check the terms of use of the linked site before using.)</p>
+                        </div>
+                    </section>
+                `
+            },
+            support: { // 困りごと相談
+                ja: `
+                    <section id="support">
+                        <h1 class="text-title">困りごと相談・便利な連絡先集</h1>
+                        <p class="text-lg text-gray-700 mb-8">生活の中でのさまざまな「困った」「どうしよう」を解決するための情報や、埼玉県の便利な相談窓口・連絡先をご案内します。一人で悩まず、まずは情報収集から始めてみませんか。</p>
+                        <div class="mb-12"><h2 class="text-subtitle">お困りごとナビ・連絡先</h2><p class="text-gray-600 mb-6">あなたの状況に近いものを選択してください。関連する情報や相談窓口の例をご案内します。</p>
+                            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('childcare', '${uiTexts.supportCategoryChildcare.ja}')"><i class="fas fa-child icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryChildcare.ja}</h3><p class="text-sm text-gray-600">保育園、学校、いじめ相談など</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('work', '${uiTexts.supportCategoryWork.ja}')"><i class="fas fa-briefcase icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryWork.ja}</h3><p class="text-sm text-gray-600">求職、キャリア相談、労働問題など</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('health', '${uiTexts.supportCategoryHealth.ja}')"><i class="fas fa-heartbeat icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryHealth.ja}</h3><p class="text-sm text-gray-600">病院検索、心のケア、依存症相談など</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('senior', '${uiTexts.supportCategorySenior.ja}')"><i class="fas fa-users icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategorySenior.ja}</h3><p class="text-sm text-gray-600">介護サービス、見守り、消費者トラブルなど</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('housing', '${uiTexts.supportCategoryHousing.ja}')"><i class="fas fa-home icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryHousing.ja}</h3><p class="text-sm text-gray-600">公営住宅、空き家、住宅ローンなど</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('foreign', '${uiTexts.supportCategoryForeign.ja}')"><i class="fas fa-globe icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryForeign.ja}</h3><p class="text-sm text-gray-600">生活相談、日本語学習、国際交流など</p></button>
+                            </div>
+                            <div id="support-info-area" class="mt-8 p-6 bg-orange-50 rounded-lg hidden"></div>
+                        </div>
+                    </section>
+                `,
+                easyJa: `
+                    <section id="support">
+                        <h1 class="text-title">こまりごと そうだん・べんりな れんらくさき</h1>
+                        <p class="text-lg text-gray-700 mb-8">せいかつ の なか の いろいろな「こまった」「どうしよう」を かいけつ する ための じょうほう や、さいたまけん の べんりな そうだん まどぐち・れんらくさき を あんない します。ひとり で なやまず、まず じょうほう を あつめる こと から はじめてみませんか。</p>
+                        <div class="mb-12"><h2 class="text-subtitle">おこまりごと なび・れんらくさき</h2><p class="text-gray-600 mb-6">あなた の じょうきょう に ちかい もの を えらんでください。かんれん する じょうほう や そうだん まどぐち の れい を あんない します。</p>
+                            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('childcare', '${uiTexts.supportCategoryChildcare.easyJa}')"><i class="fas fa-child icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryChildcare.easyJa}</h3><p class="text-sm text-gray-600">ほいくえん、がっこう、いじめ そうだん など</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('work', '${uiTexts.supportCategoryWork.easyJa}')"><i class="fas fa-briefcase icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryWork.easyJa}</h3><p class="text-sm text-gray-600">しごとさがし、きゃりあ そうだん、ろうどう もんだい など</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('health', '${uiTexts.supportCategoryHealth.easyJa}')"><i class="fas fa-heartbeat icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryHealth.easyJa}</h3><p class="text-sm text-gray-600">びょういん さがし、こころ の けあ、いぞんしょう そうだん など</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('senior', '${uiTexts.supportCategorySenior.easyJa}')"><i class="fas fa-users icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategorySenior.easyJa}</h3><p class="text-sm text-gray-600">かいご さーびす、みまもり、しょうひしゃ とらぶる など</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('housing', '${uiTexts.supportCategoryHousing.easyJa}')"><i class="fas fa-home icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryHousing.easyJa}</h3><p class="text-sm text-gray-600">こうえいじゅうたく、あきや、じゅうたくろーん など</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('foreign', '${uiTexts.supportCategoryForeign.easyJa}')"><i class="fas fa-globe icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryForeign.easyJa}</h3><p class="text-sm text-gray-600">せいかつ そうだん、にほんご がくしゅう、こくさいこうりゅう など</p></button>
+                            </div>
+                            <div id="support-info-area" class="mt-8 p-6 bg-orange-50 rounded-lg hidden"></div>
+                        </div>
+                    </section>
+                `,
+                en: `
+                    <section id="support">
+                        <h1 class="text-title">Support & Useful Contacts</h1>
+                        <p class="text-lg text-gray-700 mb-8">We provide information to help solve various "troubles" and "what to do" situations in daily life, as well as useful consultation services and contacts in Saitama Prefecture. Don't worry alone, why not start by gathering information?</p>
+                        <div class="mb-12"><h2 class="text-subtitle">Trouble Navigator & Contacts</h2><p class="text-gray-600 mb-6">Please select the situation closest to yours. We will guide you to related information and examples of consultation services.</p>
+                            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('childcare', '${uiTexts.supportCategoryChildcare.en}')"><i class="fas fa-child icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryChildcare.en}</h3><p class="text-sm text-gray-600">Nursery, school, bullying consultation, etc.</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('work', '${uiTexts.supportCategoryWork.en}')"><i class="fas fa-briefcase icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryWork.en}</h3><p class="text-sm text-gray-600">Job search, career consultation, labor issues, etc.</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('health', '${uiTexts.supportCategoryHealth.en}')"><i class="fas fa-heartbeat icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryHealth.en}</h3><p class="text-sm text-gray-600">Hospital search, mental health care, addiction consultation, etc.</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('senior', '${uiTexts.supportCategorySenior.en}')"><i class="fas fa-users icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategorySenior.en}</h3><p class="text-sm text-gray-600">Nursing care, monitoring services, consumer troubles, etc.</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('housing', '${uiTexts.supportCategoryHousing.en}')"><i class="fas fa-home icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryHousing.en}</h3><p class="text-sm text-gray-600">Public housing, vacant houses, housing loans, etc.</p></button>
+                                <button class="card text-left hover:bg-orange-50" onclick="window.showSupportInfo('foreign', '${uiTexts.supportCategoryForeign.en}')"><i class="fas fa-globe icon-style"></i><h3 class="font-semibold text-xl text-gray-800">${uiTexts.supportCategoryForeign.en}</h3><p class="text-sm text-gray-600">Living consultation, Japanese language learning, international exchange, etc.</p></button>
+                            </div>
+                            <div id="support-info-area" class="mt-8 p-6 bg-orange-50 rounded-lg hidden"></div>
+                        </div>
+                    </section>
+                `
+            },
+            events: { // 地域のイベント
+                ja: `
+                    <section id="events">
+                        <h1 class="text-title">地域のイベント</h1><p class="text-lg text-gray-700 mb-8">埼玉県内で開催されるさまざまなイベント情報をお届けします。AIに今月のイベント情報を尋ねてみましょう！</p>
+                        <div class="mb-10 card"><h2 class="text-subtitle">AIによる今月のイベント提案 ✨</h2><button id="get-ai-events-btn" class="button-ai w-full sm:w-auto">${uiTexts.eventsAiButton.ja}</button><div id="ai-events-area" class="mt-6 hidden min-h-[10rem]"><p id="ai-events-loading" class="text-gray-500">AIがイベント情報を探しています...</p><div id="ai-events-content-list"></div><p class="text-xs text-gray-500 mt-4">※AIによる提案であり、情報が最新でない場合や変更されている場合があります。詳細は必ず公式サイト等でご確認ください。</p></div></div>
+                        <div class="mb-8"><h2 class="text-subtitle">イベントを手動で探す</h2><div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6"><input type="text" placeholder="キーワードで検索 (例: 祭り)" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 col-span-full md:col-span-2"><select class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"><option>カテゴリ選択</option></select><input type="date" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></div><button class="button-primary" onclick="showModal('検索機能','この検索機能は現在開発中です。')">${uiTexts.eventsSearchButton.ja}</button></div>
+                        <div><h2 class="text-subtitle">主な年間イベント (参考)</h2><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="card"><img src="https://placehold.co/600x400/FFDAB9/4A2311?text=川越まつり" alt="川越まつりのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">川越まつり</h3><p class="text-sm text-gray-500">10月</p></div><div class="card"><img src="https://placehold.co/600x400/A0E6C4/2B4A3C?text=鉄道博物館イベント" alt="鉄道博物館イベントのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">鉄道博物館 イベント</h3><p class="text-sm text-gray-500">随時</p></div><div class="card"><img src="https://placehold.co/600x400/F0E68C/4A2311?text=秩父夜祭" alt="秩父夜祭のイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">秩父夜祭</h3><p class="text-sm text-gray-500">12月</p></div></div></div>
+                    </section>
+                `,
+                easyJa: `
+                    <section id="events">
+                        <h1 class="text-title">ちいきの いべんと</h1><p class="text-lg text-gray-700 mb-8">さいたまけん で おこなわれる いろいろな いべんと の じょうほう を おとどけします。AIに こんげつ の いべんと を きいてみましょう！</p>
+                        <div class="mb-10 card"><h2 class="text-subtitle">AIが おしえる こんげつ の いべんと ✨</h2><button id="get-ai-events-btn" class="button-ai w-full sm:w-auto">${uiTexts.eventsAiButton.easyJa}</button><div id="ai-events-area" class="mt-6 hidden min-h-[10rem]"><p id="ai-events-loading" class="text-gray-500">AIが いべんと を さがしています...</p><div id="ai-events-content-list"></div><p class="text-xs text-gray-500 mt-4">※AIが つくった じょうほう です。あたらしいか どうか、かわっている かもしれません。くわしくは かならず こうしきさいと など で しらべてください。</p></div></div>
+                        <div class="mb-8"><h2 class="text-subtitle">いべんと を じぶん で さがす</h2><div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6"><input type="text" placeholder="ことば で さがす (れい: まつり)" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 col-span-full md:col-span-2"><select class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"><option>かてごり を えらぶ</option></select><input type="date" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></div><button class="button-primary" onclick="showModal('検索機能','この検索機能は現在開発中です。')">${uiTexts.eventsSearchButton.easyJa}</button></div>
+                        <div><h2 class="text-subtitle">おもな ねんかん いべんと (さんこう)</h2><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="card"><img src="https://placehold.co/600x400/FFDAB9/4A2311?text=川越まつり" alt="川越まつりのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">かわごえ まつり</h3><p class="text-sm text-gray-500">10がつ</p></div><div class="card"><img src="https://placehold.co/600x400/A0E6C4/2B4A3C?text=鉄道博物館イベント" alt="鉄道博物館イベントのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">てつどうはくぶつかん いべんと</h3><p class="text-sm text-gray-500">いつでも</p></div><div class="card"><img src="https://placehold.co/600x400/F0E68C/4A2311?text=秩父夜祭" alt="秩父夜祭のイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">ちちぶ よまつり</h3><p class="text-sm text-gray-500">12がつ</p></div></div></div>
+                    </section>
+                `,
+                en: `
+                    <section id="events">
+                        <h1 class="text-title">Local Events</h1><p class="text-lg text-gray-700 mb-8">We deliver information on various events held in Saitama Prefecture. Let's ask AI for this month's event information!</p>
+                        <div class="mb-10 card"><h2 class="text-subtitle">AI's Event Suggestions for This Month ✨</h2><button id="get-ai-events-btn" class="button-ai w-full sm:w-auto">${uiTexts.eventsAiButton.en}</button><div id="ai-events-area" class="mt-6 hidden min-h-[10rem]"><p id="ai-events-loading" class="text-gray-500">AI is searching for event information...</p><div id="ai-events-content-list"></div><p class="text-xs text-gray-500 mt-4">*Suggestions by AI. Information may not be up-to-date or may have changed. Please be sure to check official websites for details.</p></div></div>
+                        <div class="mb-8"><h2 class="text-subtitle">Search Events Manually</h2><div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6"><input type="text" placeholder="Search by keyword (e.g., festival)" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 col-span-full md:col-span-2"><select class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"><option>Select Category</option></select><input type="date" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></div><button class="button-primary" onclick="showModal('Search Function','This search function is currently under development.')">${uiTexts.eventsSearchButton.en}</button></div>
+                        <div><h2 class="text-subtitle">Major Annual Events (Reference)</h2><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="card"><img src="https://placehold.co/600x400/FFDAB9/4A2311?text=Kawagoe%20Festival" alt="Image of Kawagoe Festival" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">Kawagoe Festival</h3><p class="text-sm text-gray-500">October</p></div><div class="card"><img src="https://placehold.co/600x400/A0E6C4/2B4A3C?text=Railway%20Museum%20Event" alt="Image of Railway Museum Event" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">Railway Museum Event</h3><p class="text-sm text-gray-500">Anytime</p></div><div class="card"><img src="https://placehold.co/600x400/F0E68C/4A2311?text=Chichibu%20Night%20Festival" alt="Image of Chichibu Night Festival" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">Chichibu Night Festival</h3><p class="text-sm text-gray-500">December</p></div></div></div>
+                    </section>
+                `
+            },
+            about: { // このサイトについて
+                ja: `
+                    <section id="about"><h1 class="text-title">このサイトについて</h1><div class="card"><p class="text-lg text-gray-700">「彩の国やすらぎウェブ」は、埼玉県民のための情報交換と支援のプラットフォームです。皆さまの生活がより豊かで安心できるものになるよう、様々な情報や機能を提供してまいります。</p></div></section>
+                `,
+                easyJa: `
+                    <section id="about"><h1 class="text-title">このさいと について</h1><div class="card"><p class="text-lg text-gray-700">「さいのくに やすらぎ うぇぶ」は、さいたまけん に すむ ひと の ための、じょうほうこうかん や しえん の ばしょ です。みんな の せいかつ が もっと よくなり、あんしん できるように、いろいろな じょうほう や きのう を つくっていきます。</p></div></section>
+                `,
+                en: `
+                    <section id="about"><h1 class="text-title">About This Site</h1><div class="card"><p class="text-lg text-gray-700">"Saitama Yasuragi Web" is an information exchange and support platform for the residents of Saitama Prefecture. We will continue to provide various information and functions to make everyone's life richer and more secure.</p></div></section>
+                `
+            },
+            privacy: { // プライバシーポリシー
+                ja: `
+                    <section id="privacy" class="legal-content">
+                        <h1 class="text-title">プライバシーポリシー</h1>
+                        <div class="card">
+                            <p>制定日：2025年05月25日</p>
+                            <p>最終改定日：2025年05月25日</p>
+                            <p>彩の国やすらぎウェブ（以下「当サイト」といいます。）は、ユーザーの個人情報保護の重要性について認識し、個人情報の保護に関する法律（以下「個人情報保護法」といいます。）を遵守すると共に、以下のプライバシーポリシー（以下「本ポリシー」といいます。）に従い、適切な取扱い及び保護に努めます。</p>
+                            <h2>第1条（個人情報の定義）</h2>
+                            <p>本ポリシーにおいて、個人情報とは、個人情報保護法第2条第1項により定義された個人情報、すなわち、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日その他の記述等により特定の個人を識別することができるもの（他の情報と容易に照合することができ、それにより特定の個人を識別することができることとなるものを含みます。）、もしくは個人識別符号が含まれる情報を意味します。</p>
+                            <p class="mt-6">（以下、詳細な条文が続きます。全文は日本語版をご参照ください。）</p>
+                            <h2>第10条（お問い合わせ窓口）</h2>
+                            <p><strong>彩の国やすらぎウェブ</strong></p>
+                            <p>個人情報取扱責任者： 彩の国やすらぎウェブ運営事務局</p>
+                            <p>連絡先： masa_mm@ymail.ne.jp</p>
+                            <br><p>以上</p>
+                        </div>
+                    </section>
+                `,
+                easyJa: `
+                    <section id="privacy" class="legal-content">
+                        <h1 class="text-title">ぷらいばしーぽりしー (こじんじょうほう の あつかい)</h1>
+                        <div class="card">
+                            <p>つくったひ：2025ねん05がつ25にち</p>
+                            <p>さいごに なおしたひ：2025ねん05がつ25にち</p>
+                            <p>「さいのくに やすらぎ うぇぶ」（この さいと） は、みなさんの たいせつな じょうほう（なまえ や じゅうしょ など）を まもります。「こじんじょうほうほごほう」という きまり を まもり、この ぽりしー に そって、ただしく あつかいます。</p>
+                            <h2>だい1じょう（こじんじょうほう とは）</h2>
+                            <p>「こじんじょうほう」とは、いきている ひと の じょうほうで、なまえ や せいねんがっぴ などで、だれか わかる もの です。</p>
+                            <p class="mt-6">（このした に くわしい きまり が かいてあります。ぜんぶ は にほんご の ぺーじ を みてください。）</p>
+                            <h2>だい10じょう（といあわせ まどぐち）</h2>
+                            <p><strong>さいのくに やすらぎ うぇぶ</strong></p>
+                            <p>たんとう：さいのくに やすらぎ うぇぶ うんえいじむきょく</p>
+                            <p>れんらくさき： masa_mm@ymail.ne.jp</p>
+                            <br><p>いじょう</p>
+                        </div>
+                    </section>
+                `,
+                en: `
+                    <section id="privacy" class="legal-content">
+                        <h1 class="text-title">Privacy Policy</h1>
+                        <div class="card">
+                            <p>Established: May 25, 2025</p>
+                            <p>Last Revised: May 25, 2025</p>
+                            <p>Saitama Yasuragi Web (hereinafter referred to as "this site") recognizes the importance of protecting users' personal information, complies with the Act on the Protection of Personal Information (hereinafter referred to as the "Personal Information Protection Act"), and strives for appropriate handling and protection in accordance with the following privacy policy (hereinafter referred to as "this policy").</p>
+                            <h2>Article 1 (Definition of Personal Information)</h2>
+                            <p>In this policy, personal information means personal information as defined in Article 2, Paragraph 1 of the Personal Information Protection Act, that is, information about a living individual that can identify a specific individual by name, date of birth, or other description, etc. contained in such information (including information that can be easily collated with other information and thereby identify a specific individual), or information containing an individual identification code.</p>
+                            <p class="mt-6">(Detailed provisions follow below. Please refer to the Japanese version for the full text.)</p>
+                            <h2>Article 10 (Contact Information)</h2>
+                            <p><strong>Saitama Yasuragi Web</strong></p>
+                            <p>Person in charge of handling personal information: Saitama Yasuragi Web Management Office</p>
+                            <p>Contact: masa_mm@ymail.ne.jp</p>
+                            <br><p>End</p>
+                        </div>
+                    </section>
+                `
+            },
+            terms: { // 利用規約
+                ja: `
+                    <section id="terms" class="legal-content">
+                        <h1 class="text-title">利用規約</h1>
+                        <div class="card">
+                            <p>制定日：2025年05月25日</p>
+                            <p>最終改定日：2025年05月25日</p>
+                            <p>この利用規約（以下、「本規約」といいます。）は、彩の国やすらぎウェブ（以下、「当サイト」といいます。）が提供するサービス（以下、「本サービス」といいます。）の利用条件を定めるものです。本サービスをご利用されるすべての方（以下、「ユーザー」といいます。）は、本規約に同意の上、本サービスをご利用いただくものとします。</p>
+                            <p class="mt-6">（以下、詳細な条文が続きます。全文は日本語版をご参照ください。）</p>
+                            <h2>第13条（お問い合わせ窓口）</h2>
+                            <p>本規約に関するお問い合わせは、下記の窓口までお願いいたします。</p>
+                            <p><strong>彩の国やすらぎウェブ</strong></p>
+                            <p>運営担当： 彩の国やすらぎウェブ運営事務局</p>
+                            <p>連絡先： masa_mm@ymail.ne.jp</p>
+                            <br><p>以上</p>
+                        </div>
+                    </section>
+                `,
+                easyJa: `
+                    <section id="terms" class="legal-content">
+                        <h1 class="text-title">りようきやく (つかう ときの やくそく)</h1>
+                        <div class="card">
+                            <p>つくったひ：2025ねん05がつ25にち</p>
+                            <p>さいごに なおしたひ：2025ねん05がつ25にち</p>
+                            <p>この やくそく は、「さいのくに やすらぎ うぇぶ」（この さいと）の さーびす を つかう ときの るーる です。この さいと を つかう ひと は、この やくそく に どうい して つかってください。</p>
+                            <p class="mt-6">（このした に くわしい やくそく が かいてあります。ぜんぶ は にほんご の ぺーじ を みてください。）</p>
+                            <h2>だい13じょう（といあわせ まどぐち）</h2>
+                            <p>この やくそく について しつもん が ある ばあい は、した に れんらく してください。</p>
+                            <p><strong>さいのくに やすらぎ うぇぶ</strong></p>
+                            <p>たんとう：さいのくに やすらぎ うぇぶ うんえいじむきょく</p>
+                            <p>れんらくさき： masa_mm@ymail.ne.jp</p>
+                            <br><p>いじょう</p>
+                        </div>
+                    </section>
+                `,
+                en: `
+                    <section id="terms" class="legal-content">
+                        <h1 class="text-title">Terms of Service</h1>
+                        <div class="card">
+                            <p>Established: May 25, 2025</p>
+                            <p>Last Revised: May 25, 2025</p>
+                            <p>These Terms of Service (hereinafter referred to as "these Terms") set forth the terms and conditions for using the services (hereinafter referred to as "the Service") provided by Saitama Yasuragi Web (hereinafter referred to as "this site"). All users of the Service (hereinafter referred to as "Users") shall use the Service after agreeing to these Terms.</p>
+                            <p class="mt-6">(Detailed provisions follow below. Please refer to the Japanese version for the full text.)</p>
+                            <h2>Article 13 (Contact Information)</h2>
+                            <p>For inquiries regarding these Terms, please contact the following:</p>
+                            <p><strong>Saitama Yasuragi Web</strong></p>
+                            <p>Operator: Saitama Yasuragi Web Management Office</p>
+                            <p>Contact: masa_mm@ymail.ne.jp</p>
+                            <br><p>End</p>
+                        </div>
+                    </section>
+                `
+            }
         };
 
         // --- Global Variables & Elements ---
         const mainContent = document.getElementById('main-content');
-        const navLinks = document.querySelectorAll('nav a, #mobile-menu a');
+        const navLinks = document.querySelectorAll('header nav a[data-page], #mobile-menu a[data-page]'); // より具体的に選択
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const accessibilityToggle = document.getElementById('accessibility-toggle');
@@ -310,33 +733,32 @@
         const modalCloseButton = document.getElementById('modal-close-button');
 
         // --- Navigation Logic ---
-        function navigateTo(pageName) {
-            if (plazaQuestionsListener) { plazaQuestionsListener(); plazaQuestionsListener = null; }
+        function navigateTo(pageKey) {
+            currentPageKey = pageKey; // 現在のページキーを更新
+            
+            const contentData = pageContents[pageKey]?.[currentLanguage] || pageContents[pageKey]?.['ja'] || `<p class="text-center text-red-500">このページの${currentLanguage === 'easyJa' ? 'やさしい日本語' : currentLanguage === 'en' ? '英語' : '日本語'}版コンテンツは見つかりませんでした。</p>`;
+            
+            mainContent.innerHTML = contentData;
+            window.scrollTo(0, 0);
 
-            if (pageContents[pageName]) {
-                mainContent.innerHTML = pageContents[pageName];
-                window.scrollTo(0, 0);
-                navLinks.forEach(link => { link.classList.remove('nav-link-active'); if (link.dataset.page === pageName) link.classList.add('nav-link-active'); });
-                // For language pages, ensure correct nav link is active (or none if not in main nav)
-                if (pageName === 'easyJapanese' || pageName === 'english') {
-                    // No specific nav link for these, so all main navs are inactive
-                    navLinks.forEach(link => link.classList.remove('nav-link-active'));
+            navLinks.forEach(link => {
+                link.classList.remove('nav-link-active');
+                if (link.dataset.page === pageKey) {
+                    link.classList.add('nav-link-active');
                 }
+            });
+            mobileMenu.classList.add('hidden'); 
 
-
-                mobileMenu.classList.add('hidden');
-
-                // Initialize page-specific JS after content is loaded
-                if (pageName === 'plaza' && auth.currentUser) loadPlazaFeatures();
-                if (pageName === 'events') initializeEventsPage();
-                if (pageName === 'home') initializeHomePage();
-
-                if (pageName !== 'support') { const supportInfoArea = document.getElementById('support-info-area'); if (supportInfoArea) supportInfoArea.classList.add('hidden');}
-            } else {
-                console.error('Page not found:', pageName);
-                mainContent.innerHTML = '<p class="text-center text-red-500">エラー: ページが見つかりませんでした。</p>';
+            if (pageKey === 'events') initializeEventsPage();
+            if (pageKey === 'home') initializeHomePage();
+            
+            if (pageKey !== 'support') { 
+                const supportInfoArea = document.getElementById('support-info-area'); 
+                if (supportInfoArea) supportInfoArea.classList.add('hidden');
             }
+            translateUI(); 
         }
+
 
         navLinks.forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); const page = e.target.closest('a').dataset.page; navigateTo(page); window.location.hash = page; }));
         document.querySelectorAll('footer a[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); const page = e.target.dataset.page; navigateTo(page); window.location.hash = page; }));
@@ -346,81 +768,84 @@
         fontSizeSlider.addEventListener('input', (e) => { document.documentElement.style.fontSize = e.target.value + '%'; fontSizeValue.textContent = `文字サイズ (${e.target.value}%)`; });
         
         languageSelect.addEventListener('change', (e) => {
-            const langPageKey = e.target.value;
-            if (pageContents[langPageKey]) {
-                navigateTo(langPageKey);
-                window.location.hash = langPageKey; // Update URL hash
-            } else {
-                // Fallback or error message if the page key isn't found (should not happen with correct option values)
-                showModal('言語設定', `選択された言語のページ (${langPageKey}) は見つかりませんでした。`);
-            }
+            currentLanguage = e.target.value; // 'ja', 'easyJa', 'en' のいずれか
+            // URLハッシュに言語情報を追加または更新: #pageKey:lang
+            window.location.hash = `${currentPageKey}:${currentLanguage}`; 
+            navigateTo(currentPageKey); 
         });
         
-        contrastToggle.addEventListener('click', () => showModal('コントラスト設定', 'ハイコントラスト機能 (準備中)'));
+        contrastToggle.addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast-mode');
+            if (document.body.classList.contains('high-contrast-mode')) {
+                contrastToggle.textContent = '標準コントラストに戻す';
+            } else {
+                contrastToggle.textContent = 'ハイコントラストにする';
+            }
+        });
 
         window.showModal = function(title, message) { modalTitle.textContent = title; modalMessage.textContent = message; messageModal.classList.remove('hidden'); }
         modalCloseButton.addEventListener('click', () => messageModal.classList.add('hidden'));
         messageModal.addEventListener('click', (e) => { if (e.target === messageModal) messageModal.classList.add('hidden'); });
 
-        // --- Plaza Page Specific Logic ---
-        function loadPlazaFeatures() {
-            if (!auth || !db || !userId || !auth.currentUser) {
-                console.log("Plaza features cannot be loaded: Firebase not ready or user not authenticated.");
-                const qList = document.getElementById('questions-list');
-                if (qList) qList.innerHTML = '<p class="text-gray-500">質問機能の利用には認証が必要です。しばらくお待ちください...</p>';
-                return;
-            }
-            const postQuestionForm = document.getElementById('post-question-form');
-            const questionsList = document.getElementById('questions-list');
-            const loadingQuestions = document.getElementById('loading-questions');
-
-            if (!postQuestionForm || !questionsList) { return; }
-
-            postQuestionForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                if (!auth.currentUser) { showModal("投稿エラー", "サインインが必要です。"); return; }
-                const questionText = postQuestionForm.questionText.value.trim();
-                if (!questionText) { showModal("投稿エラー", "質問内容を入力してください。"); return; }
-                try {
-                    const questionsCollectionPath = `artifacts/${appId}/public/data/plazaQuestions`;
-                    await addDoc(collection(db, questionsCollectionPath), {
-                        text: questionText, authorId: userId,
-                        authorName: auth.currentUser.isAnonymous ? `匿名 (${userId.substring(0,5)})` : (auth.currentUser.displayName || `ユーザー (${userId.substring(0,5)})`),
-                        createdAt: serverTimestamp(), answers: []
-                    });
-                    postQuestionForm.reset(); showModal("投稿完了", "質問が投稿されました。");
-                } catch (error) { showModal("投稿エラー", `失敗しました: ${error.message}`); }
-            });
-            const questionsCollectionPath = `artifacts/${appId}/public/data/plazaQuestions`;
-            const q = query(collection(db, questionsCollectionPath)); 
-            if (plazaQuestionsListener) plazaQuestionsListener();
-            plazaQuestionsListener = onSnapshot(q, (querySnapshot) => {
-                if (loadingQuestions) loadingQuestions.style.display = 'none';
-                questionsList.innerHTML = ''; 
-                if (querySnapshot.empty) { questionsList.innerHTML = '<p class="text-gray-500">まだ質問はありません。</p>'; return; }
-                let questions = [];
-                querySnapshot.forEach((doc) => questions.push({ id: doc.id, ...doc.data() }));
-                questions.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
-                questions.forEach((question) => {
-                    const item = document.createElement('div'); item.className = 'question-item';
-                    item.innerHTML = `<h3>${question.text.length > 50 ? question.text.substring(0, 50) + '...' : question.text}</h3><p class="meta">投稿者: ${question.authorName || '不明'} | 日時: ${question.createdAt ? new Date(question.createdAt.seconds * 1000).toLocaleString('ja-JP') : '不明'}</p><p class="body">${question.text}</p>`;
-                    questionsList.appendChild(item);
-                });
-            }, (error) => { if (loadingQuestions) loadingQuestions.style.display = 'none'; questionsList.innerHTML = `<p class="text-red-500">質問の読み込み失敗: ${error.message}</p>`; });
-        }
 
         // --- Support Page Specific Logic (including Gemini API for advice) ---
         window.showSupportInfo = function(categoryKey, categoryName) {
             const infoArea = document.getElementById('support-info-area');
             if (!infoArea) return;
-            let staticContent = '';
-            switch(categoryKey) {
-                case 'childcare': staticContent = `<h3 class="text-xl font-semibold text-orange-700 mb-3">${categoryName}の悩み</h3><p class="mb-2">埼玉県では、子育て中の家庭を支援するための様々な情報やサービスがあります。</p>`; break;
-                case 'work': staticContent = `<h3 class="text-xl font-semibold text-orange-700 mb-3">${categoryName}の悩み</h3><p class="mb-2">就職活動、キャリアアップ、労働条件に関する相談窓口や支援制度をご案内します。</p>`; break;
-                case 'health': staticContent = `<h3 class="text-xl font-semibold text-orange-700 mb-3">${categoryName}の悩み</h3><p class="mb-2">急な病気や怪我、心の不調など、健康に関する相談先や医療機関の情報を提供します。</p>`; break;
-                default: staticContent = `<h3 class="text-xl font-semibold text-orange-700 mb-3">${categoryName}</h3><p>関連情報や相談窓口について調べています。</p>`;
+
+            let titleText, descriptionText, contactListTitleText, aiButtonText;
+            if (currentLanguage === 'easyJa') {
+                titleText = `${uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)]?.easyJa || categoryName} の なやみ`;
+                descriptionText = `さいたまけん では、「${uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)]?.easyJa || categoryName}」に かんする いろいろな じょうほう や さーびす が あります。`;
+                contactListTitleText = "れんらくさき の れい:";
+                aiButtonText = "AIに いっぱんてきな あどばいす を もらう ✨";
+            } else if (currentLanguage === 'en') {
+                titleText = `Concerns about ${uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)]?.en || categoryName}`;
+                descriptionText = `In Saitama Prefecture, there are various information and services to support those with concerns about "${uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)]?.en || categoryName}".`;
+                contactListTitleText = "Example Contacts:";
+                aiButtonText = "Get General Advice from AI ✨";
+            } else { // default to Japanese
+                titleText = `${categoryName}の悩み`;
+                descriptionText = `埼玉県では、「${categoryName}」に関する様々な情報やサービスがあります。お近くの市町村の窓口や、以下の連絡先にご相談ください。`;
+                contactListTitleText = "連絡先の例:";
+                aiButtonText = "AIに一般的なアドバイスをもらう ✨";
             }
-            infoArea.innerHTML = `${staticContent}<button id="get-ai-advice-btn" class="button-ai mt-4" onclick="window.getAiAdvice('${categoryKey}', '${categoryName}')">AIにアドバイスをもらう ✨</button><div id="ai-advice-area" class="mt-4 p-4 bg-teal-50 rounded-lg border border-teal-200 hidden min-h-[8rem]"><p id="ai-advice-loading" class="text-gray-500">AIからのアドバイスを生成中です...</p><p id="ai-advice-content"></p></div>`;
+            
+            let staticContent = `<h3 class="text-xl font-semibold text-orange-700 mb-3">${titleText}</h3><p class="mb-2">${descriptionText}</p>`;
+            let contactInfo = `<h4 class="text-lg font-semibold text-gray-700 mt-4 mb-2">${contactListTitleText}</h4><ul class="contact-list space-y-2">`;
+
+            // 連絡先情報は日本語のままですが、将来的にはこれも翻訳対象
+            switch(categoryKey) {
+                case 'childcare': 
+                    contactInfo += `
+                        <li><strong>埼玉県虐待禁止条例に基づく児童虐待の通告・相談窓口（子ども家庭センター）:</strong> <a href="tel:048-775-4152">048-775-4152</a></li>
+                        <li><strong>子育て応援ダイヤル:</strong> <a href="tel:048-822-7007">048-822-7007</a></li>
+                        <li><strong>お近くの市町村の子育て支援課:</strong> (各市町村のウェブサイトでご確認ください)</li>
+                    `;
+                    break;
+                case 'work': 
+                    contactInfo += `
+                        <li><strong>ハローワークインターネットサービス:</strong> <a href="https://www.hellowork.mhlw.go.jp/" target="_blank" rel="noopener noreferrer">ウェブサイト</a></li>
+                        <li><strong>埼玉労働局 総合労働相談コーナー:</strong> (各地域の相談窓口をご確認ください)</li>
+                        <li><strong>若者自立支援センター埼玉:</strong> <a href="https://www.sodateage.net/yss/saitama/" target="_blank" rel="noopener noreferrer">ウェブサイト</a></li>
+                    `;
+                    break;
+                case 'health': 
+                    contactInfo += `
+                        <li><strong>埼玉県救急電話相談:</strong> <a href="tel:#7119">#7119</a> (プッシュ回線・携帯電話) または <a href="tel:048-824-4199">048-824-4199</a></li>
+                        <li><strong>埼玉県精神保健福祉センター こころの電話:</strong> <a href="tel:048-723-1447">048-723-1447</a></li>
+                        <li><strong>いのちの電話（埼玉）:</strong> <a href="tel:048-645-4343">048-645-4343</a></li>
+                    `;
+                    break;
+                default: 
+                    contactInfo += `<li><strong>お住まいの市町村役場:</strong> (各市町村のウェブサイトでご確認ください)</li>`;
+            }
+            contactInfo += '</ul>'; 
+            if (currentLanguage !== 'ja') {
+                contactInfo += `<p class="text-sm text-gray-500 mt-3">（${currentLanguage === 'easyJa' ? 'くわしい れんらくさき は、にほんご で かいてあります。' : 'Detailed contact information is currently available in Japanese only.'}）</p>`;
+            }
+
+            infoArea.innerHTML = `${staticContent} ${contactInfo} <button id="get-ai-advice-btn" class="button-ai mt-6" onclick="window.getAiAdvice('${categoryKey}', '${categoryName}')">${aiButtonText}</button><div id="ai-advice-area" class="mt-4 p-4 bg-teal-50 rounded-lg border border-teal-200 hidden min-h-[8rem]"><p id="ai-advice-loading" class="text-gray-500">AIからのアドバイスを生成中です...</p><p id="ai-advice-content"></p></div>`;
             infoArea.classList.remove('hidden');
         }
         window.getAiAdvice = async function(categoryKey, categoryName) {
@@ -429,25 +854,47 @@
             const aiAdviceContent = document.getElementById('ai-advice-content');
             const aiButton = document.getElementById('get-ai-advice-btn');
             if (!aiAdviceArea || !aiAdviceLoading || !aiAdviceContent || !aiButton) { showModal("エラー", "AIアドバイス表示エリアの準備に失敗しました。"); return; }
-            aiAdviceArea.classList.remove('hidden'); aiAdviceLoading.classList.remove('hidden'); aiAdviceContent.textContent = ''; aiButton.disabled = true; aiButton.textContent = 'AIが考え中...';
-            const prompt = `あなたは埼玉県の地域住民を親身にサポートするAIアシスタントです。埼玉県の「${categoryName}」に関する一般的な悩みについて、具体的な行動のヒントとなるようなアドバイスや、利用できる可能性のある公的または民間の支援サービスの種類、あるいは関連情報を探す際のキーワードなどを3つほど提案してください。回答は箇条書きなどの形式で、簡潔かつ分かりやすくお願いします。`;
+            aiAdviceArea.classList.remove('hidden'); aiAdviceLoading.classList.remove('hidden'); aiAdviceContent.textContent = ''; aiButton.disabled = true; 
+            
+            let aiButtonThinkingText = "AIが考え中...";
+            if (currentLanguage === 'easyJa') aiButtonThinkingText = "AIが かんがえちゅう...";
+            if (currentLanguage === 'en') aiButtonThinkingText = "AI is thinking...";
+            aiButton.textContent = aiButtonThinkingText;
+
+            const prompt = `あなたは埼玉県の地域住民を親身にサポートするAIアシスタントです。埼玉県の「${categoryName}」に関する一般的な悩みについて、具体的な行動のヒントとなるようなアドバイスや、利用できる可能性のある公的または民間の支援サービスの種類、あるいは関連情報を探す際のキーワードなどを3つほど提案してください。回答は箇条書きなどの形式で、簡潔かつ分かりやすくお願いします。回答言語は${currentLanguage === 'easyJa' ? 'やさしい日本語' : currentLanguage === 'en' ? '英語' : '日本語'}でお願いします。`;
             try {
-                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; const payload = { contents: chatHistory }; const apiKey = "";
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
+                const payload = { contents: chatHistory }; 
+                const apiKey = "AIzaSyDqPUvMx4P7pfTYGPa7lN2TE_0fCzrku_M"; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (!response.ok) { const errorData = await response.json(); throw new Error(`APIエラー: ${response.status} ${errorData.error?.message || '不明なエラー'}`); }
                 const result = await response.json();
                 if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                     aiAdviceContent.textContent = result.candidates[0].content.parts[0].text;
-                } else { aiAdviceContent.textContent = "AIから有効なアドバイスを得られませんでした。"; }
-            } catch (error) { aiAdviceContent.textContent = `アドバイスの取得中にエラーが発生しました: ${error.message}`; } 
-            finally { aiAdviceLoading.classList.add('hidden'); aiButton.disabled = false; aiButton.textContent = 'AIにアドバイスをもらう ✨'; }
+                } else { aiAdviceContent.textContent = (currentLanguage === 'easyJa' ? "AIから よい あどばいす を もらえませんでした。" : currentLanguage === 'en' ? "Could not get valid advice from AI." : "AIから有効なアドバイスを得られませんでした。"); }
+            } catch (error) { aiAdviceContent.textContent = (currentLanguage === 'easyJa' ? `あどばいす を もらう ときに えらー が でました: ${error.message}` : currentLanguage === 'en' ? `Error getting advice: ${error.message}` : `アドバイスの取得中にエラーが発生しました: ${error.message}`); } 
+            finally { 
+                aiAdviceLoading.classList.add('hidden'); 
+                aiButton.disabled = false; 
+                let aiButtonDefaultText = "AIに一般的なアドバイスをもらう ✨";
+                if (currentLanguage === 'easyJa') aiButtonDefaultText = "AIに いっぱんてきな あどばいす を もらう ✨";
+                if (currentLanguage === 'en') aiButtonDefaultText = "Get General Advice from AI ✨";
+                aiButton.textContent = aiButtonDefaultText;
+            }
         }
 
         // --- Events Page Specific Logic (including Gemini API for events) ---
         function initializeEventsPage() {
             const getAiEventsBtn = document.getElementById('get-ai-events-btn');
-            if (getAiEventsBtn) getAiEventsBtn.addEventListener('click', getAiEventSuggestions);
+            if (getAiEventsBtn) {
+                 getAiEventsBtn.textContent = uiTexts.eventsAiButton[currentLanguage] || uiTexts.eventsAiButton.ja; // ボタンテキストも翻訳
+                 getAiEventsBtn.addEventListener('click', getAiEventSuggestions);
+            } else console.warn("'get-ai-events-btn' not found on events page init.");
+            
+            const searchButton = document.querySelector('#events button.button-primary');
+            if(searchButton) searchButton.textContent = uiTexts.eventsSearchButton[currentLanguage] || uiTexts.eventsSearchButton.ja;
+
         }
         async function getAiEventSuggestions() {
             const aiEventsArea = document.getElementById('ai-events-area');
@@ -455,11 +902,19 @@
             const aiEventsContentList = document.getElementById('ai-events-content-list');
             const aiButton = document.getElementById('get-ai-events-btn');
             if (!aiEventsArea || !aiEventsLoading || !aiEventsContentList || !aiButton) { showModal("エラー", "AIイベント表示エリアの準備に失敗しました。"); return; }
-            aiEventsArea.classList.remove('hidden'); aiEventsLoading.classList.remove('hidden'); aiEventsContentList.innerHTML = ''; aiButton.disabled = true; aiButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>AIが検索中...';
-            const currentMonth = new Date().toLocaleString('ja-JP', { month: 'long' });
-            const prompt = `あなたは埼玉県の地域イベントに詳しいAIアシスタントです。埼玉県の「今月 (${currentMonth})」開催予定の主要な地域イベントを3つ提案してください。各イベントについて、イベント名、簡単な説明（100字以内）、開催期間や主な開催日、開催場所（市町村名など）を教えてください。情報は箇条書きで、各項目が分かりやすいように提示してください。`;
+            aiEventsArea.classList.remove('hidden'); aiEventsLoading.classList.remove('hidden'); aiEventsContentList.innerHTML = ''; aiButton.disabled = true; 
+            
+            let aiButtonThinkingText = '<i class="fas fa-spinner fa-spin mr-2"></i>AIが検索中...';
+            if (currentLanguage === 'easyJa') aiButtonThinkingText = '<i class="fas fa-spinner fa-spin mr-2"></i>AIが さがしています...';
+            if (currentLanguage === 'en') aiButtonThinkingText = '<i class="fas fa-spinner fa-spin mr-2"></i>AI is searching...';
+            aiButton.innerHTML = aiButtonThinkingText;
+
+            const currentMonth = new Date().toLocaleString(currentLanguage === 'en' ? 'en-US' : 'ja-JP', { month: 'long' }); // 言語に応じた月の名前
+            const prompt = `あなたは埼玉県の地域イベントに詳しいAIアシスタントです。埼玉県の「今月 (${currentMonth})」開催予定の主要な地域イベントを3つ提案してください。各イベントについて、イベント名、簡単な説明（100字以内）、開催期間や主な開催日、開催場所（市町村名など）を教えてください。情報は箇条書きで、各項目が分かりやすいように提示してください。回答言語は${currentLanguage === 'easyJa' ? 'やさしい日本語' : currentLanguage === 'en' ? '英語' : '日本語'}でお願いします。`;
             try {
-                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; const payload = { contents: chatHistory }; const apiKey = "";
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
+                const payload = { contents: chatHistory }; 
+                const apiKey = "AIzaSyDqPUvMx4P7pfTYGPa7lN2TE_0fCzrku_M"; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (!response.ok) { const errorData = await response.json(); throw new Error(`APIエラー: ${response.status} ${errorData.error?.message || '不明なエラー'}`); }
@@ -469,21 +924,25 @@
                     if (events.length > 0) {
                         events.forEach(event => {
                             const eventDiv = document.createElement('div'); eventDiv.classList.add('event-item-ai');
-                            eventDiv.innerHTML = `<h3>${event.name || 'イベント名不明'}</h3><p class="meta">${event.date ? `<strong>開催日時:</strong> ${event.date}<br>` : ''}${event.location ? `<strong>場所:</strong> ${event.location}` : ''}</p><p class="body">${event.description || '詳細情報なし'}</p><a href="#" class="text-orange-600 hover:underline mt-2 inline-block" onclick="window.showModal('詳細情報','このイベントの詳細情報は、お手数ですが別途検索して公式サイト等でご確認ください。'); return false;">詳細を確認 (外部リンクの可能性)</a>`;
+                            eventDiv.innerHTML = `<h3>${event.name || (currentLanguage === 'easyJa' ? 'いべんとめい ふめい' : currentLanguage === 'en' ? 'Event Name Unknown' : 'イベント名不明')}</h3><p class="meta">${event.date ? `<strong>${currentLanguage === 'easyJa' ? 'ひにち:' : currentLanguage === 'en' ? 'Date:' : '開催日時:'}</strong> ${event.date}<br>` : ''}${event.location ? `<strong>${currentLanguage === 'easyJa' ? 'ばしょ:' : currentLanguage === 'en' ? 'Location:' : '場所:'}</strong> ${event.location}` : ''}</p><p class="body">${event.description || (currentLanguage === 'easyJa' ? 'くわしい じょうほうなし' : currentLanguage === 'en' ? 'No details available' : '詳細情報なし')}</p><a href="#" class="text-orange-600 hover:underline mt-2 inline-block" onclick="window.showModal('詳細情報','このイベントの詳細情報は、お手数ですが別途検索して公式サイト等でご確認ください。'); return false;">${currentLanguage === 'easyJa' ? 'くわしく みる' : currentLanguage === 'en' ? 'Check Details' : '詳細を確認'} (外部リンクの可能性)</a>`;
                             aiEventsContentList.appendChild(eventDiv);
                         });
-                    } else { aiEventsContentList.innerHTML = '<p>AIから今月のイベント情報は見つかりませんでした。</p>';}
-                } else { aiEventsContentList.innerHTML = "<p>AIから有効なイベント情報が得られませんでした。</p>"; }
-            } catch (error) { aiEventsContentList.innerHTML = `<p>イベント情報の取得中にエラーが発生しました: ${error.message}</p>`; } 
-            finally { aiEventsLoading.classList.add('hidden'); aiButton.disabled = false; aiButton.innerHTML = 'AIに今月のイベント情報を尋ねる'; }
+                    } else { aiEventsContentList.innerHTML = `<p>${currentLanguage === 'easyJa' ? 'AIから こんげつ の いべんと じょうほう は みつかりませんでした。' : currentLanguage === 'en' ? "No event information found from AI for this month." : 'AIから今月のイベント情報は見つかりませんでした。'}</p>`;}
+                } else { aiEventsContentList.innerHTML = `<p>${currentLanguage === 'easyJa' ? 'AIから よい いべんと じょうほう を もらえませんでした。' : currentLanguage === 'en' ? "Could not get valid event information from AI." : 'AIから有効なイベント情報が得られませんでした。'}</p>`; }
+            } catch (error) { aiEventsContentList.innerHTML = `<p>${currentLanguage === 'easyJa' ? `いべんと じょうほう を もらう ときに えらー が でました: ${error.message}` : currentLanguage === 'en' ? `Error getting event information: ${error.message}` : `イベント情報の取得中にエラーが発生しました: ${error.message}`}</p>`; } 
+            finally { 
+                aiEventsLoading.classList.add('hidden'); 
+                aiButton.disabled = false; 
+                aiButton.innerHTML = uiTexts.eventsAiButton[currentLanguage] || uiTexts.eventsAiButton.ja;
+            }
         }
         function parseAiEventText(text) {
             const events = []; const lines = text.split('\n'); let currentEvent = {};
             for (const line of lines) {
-                if (line.match(/イベント名[:：]/)) { if (Object.keys(currentEvent).length > 0) events.push(currentEvent); currentEvent = { name: line.replace(/イベント名[:：]/, '').trim() }; } 
-                else if (line.match(/説明[:：]/) && currentEvent.name) { currentEvent.description = line.replace(/説明[:：]/, '').trim(); } 
-                else if (line.match(/(開催日時|期間|開催日)[:：]/) && currentEvent.name) { currentEvent.date = line.replace(/(開催日時|期間|開催日)[:：]/, '').trim(); } 
-                else if (line.match(/場所[:：]/) && currentEvent.name) { currentEvent.location = line.replace(/場所[:：]/, '').trim(); } 
+                if (line.match(/イベント名[:：]|Event Name[:：]|いべんとめい[:：]/i)) { if (Object.keys(currentEvent).length > 0) events.push(currentEvent); currentEvent = { name: line.replace(/イベント名[:：]|Event Name[:：]|いべんとめい[:：]/i, '').trim() }; } 
+                else if (line.match(/説明[:：]|Description[:：]|せつめい[:：]/i) && currentEvent.name) { currentEvent.description = line.replace(/説明[:：]|Description[:：]|せつめい[:：]/i, '').trim(); } 
+                else if (line.match(/(開催日時|期間|開催日)[:：]|Date\(s\)[:：]|ひにち[:：]/i) && currentEvent.name) { currentEvent.date = line.replace(/(開催日時|期間|開催日)[:：]|Date\(s\)[:：]|ひにち[:：]/i, '').trim(); } 
+                else if (line.match(/場所[:：]|Location[:：]|ばしょ[:：]/i) && currentEvent.name) { currentEvent.location = line.replace(/場所[:：]|Location[:：]|ばしょ[:：]/i, '').trim(); } 
                 else if (line.trim() === "" && Object.keys(currentEvent).length > 0) { events.push(currentEvent); currentEvent = {}; }
             }
             if (Object.keys(currentEvent).length > 0) events.push(currentEvent);
@@ -491,14 +950,32 @@
             return events;
         }
 
-        // --- Home Page Specific Logic (Gemini API for Saitama Trivia) ---
+        // --- Home Page Specific Logic (Gemini API for Saitama Trivia & Detail Buttons) ---
         function initializeHomePage() {
             const getNewTriviaBtn = document.getElementById('get-new-trivia-btn');
             if (getNewTriviaBtn) {
                 getNewTriviaBtn.addEventListener('click', getSaitamaTrivia);
-                setTimeout(getSaitamaTrivia, 100); // DOM準備待ちのため少し遅延
+                setTimeout(getSaitamaTrivia, 100); 
             } else {
                 console.warn("'get-new-trivia-btn' not found on home page init.");
+            }
+            const detailButtons = document.querySelectorAll('#home .card a.button-secondary[data-page]');
+            detailButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageName = button.dataset.page;
+                    navigateTo(pageName);
+                    window.location.hash = pageName;
+                });
+            });
+            const heroSupportButton = document.getElementById('hero-support-link');
+             if (heroSupportButton) {
+                heroSupportButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageName = heroSupportButton.dataset.page;
+                    navigateTo(pageName);
+                    window.location.hash = pageName;
+                });
             }
         }
         async function getSaitamaTrivia() {
@@ -511,22 +988,36 @@
                 if(triviaContent) triviaContent.innerHTML = "<p>豆知識機能の読み込みに失敗しました。</p>";
                 return;
             }
-            triviaLoading.classList.remove('hidden'); triviaContent.innerHTML = ''; triviaButton.disabled = true; triviaButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>AIが検索中...';
-            const prompt = `あなたは埼玉県の歴史や文化に非常に詳しいAIアシスタントです。埼玉県に関する、あまり知られていないかもしれないユニークで面白い豆知識や雑学を一つだけ、150字以内で簡潔に教えてください。出典や詳細を調べたくなるような、興味を引く内容でお願いします。`;
+            triviaLoading.classList.remove('hidden'); triviaContent.innerHTML = ''; triviaButton.disabled = true; 
+            
+            let aiButtonThinkingText = '<i class="fas fa-spinner fa-spin mr-2"></i>AIが検索中...';
+            if (currentLanguage === 'easyJa') aiButtonThinkingText = '<i class="fas fa-spinner fa-spin mr-2"></i>AIが さがしています...';
+            if (currentLanguage === 'en') aiButtonThinkingText = '<i class="fas fa-spinner fa-spin mr-2"></i>AI is searching...';
+            triviaButton.innerHTML = aiButtonThinkingText;
+
+            const prompt = `あなたは埼玉県の歴史や文化に非常に詳しいAIアシスタントです。埼玉県に関する、あまり知られていないかもしれないユニークで面白い豆知識や雑学を一つだけ、150字以内で簡潔に教えてください。出典や詳細を調べたくなるような、興味を引く内容でお願いします。回答言語は${currentLanguage === 'easyJa' ? 'やさしい日本語' : currentLanguage === 'en' ? '英語' : '日本語'}でお願いします。`;
             try {
-                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; const payload = { contents: chatHistory }; const apiKey = ""; 
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
+                const payload = { contents: chatHistory }; 
+                const apiKey = "AIzaSyDqPUvMx4P7pfTYGPa7lN2TE_0fCzrku_M"; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (!response.ok) { const errorData = await response.json(); throw new Error(`APIエラー: ${response.status} ${errorData.error?.message || '不明なエラー'}`); }
                 const result = await response.json();
                 if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                     triviaContent.innerHTML = `<p>${result.candidates[0].content.parts[0].text}</p>`;
-                } else { triviaContent.innerHTML = "<p>AIから豆知識を得られませんでした。</p>"; }
-            } catch (error) { triviaContent.innerHTML = `<p>豆知識の取得中にエラーが発生しました: ${error.message}</p>`; } 
+                } else { triviaContent.innerHTML = `<p>${currentLanguage === 'easyJa' ? "AIから まめちしき を もらえませんでした。" : currentLanguage === 'en' ? "Could not get trivia from AI." : "AIから豆知識を得られませんでした。"}</p>`; }
+            } catch (error) { triviaContent.innerHTML = `<p>${currentLanguage === 'easyJa' ? `まめちしき を もらう ときに えらー が でました: ${error.message}` : currentLanguage === 'en' ? `Error getting trivia: ${error.message}` : `豆知識の取得中にエラーが発生しました: ${error.message}`}</p>`; } 
             finally { 
                 triviaLoading.classList.add('hidden'); 
                 const currentTriviaButton = document.getElementById('get-new-trivia-btn'); 
-                if(currentTriviaButton) { currentTriviaButton.disabled = false; currentTriviaButton.innerHTML = '<i class="fas fa-sync-alt mr-2"></i>新しい豆知識を見る'; }
+                if(currentTriviaButton) { 
+                    currentTriviaButton.disabled = false; 
+                    let buttonText = '<i class="fas fa-sync-alt mr-2"></i>新しい豆知識を見る';
+                    if (currentLanguage === 'easyJa') buttonText = '<i class="fas fa-sync-alt mr-2"></i>あたらしい まめちしき を みる';
+                    if (currentLanguage === 'en') buttonText = '<i class="fas fa-sync-alt mr-2"></i>See New Trivia';
+                    currentTriviaButton.innerHTML = buttonText;
+                }
             }
         }
 
@@ -534,20 +1025,25 @@
         async function initializePage() {
             document.getElementById('current-year').textContent = new Date().getFullYear();
             await attemptInitialSignIn();
-            const initialPage = window.location.hash.substring(1) || 'home';
-            navigateTo(initialPage);
-             // Ensure language dropdown reflects current page if it's a language page
-            const langSelect = document.getElementById('language-select');
-            if (initialPage === 'easyJapanese' || initialPage === 'english') {
-                langSelect.value = initialPage;
-            } else {
-                // If navigating to a non-language specific page (e.g. home, plaza),
-                // ensure the language dropdown is set to "日本語" (home).
-                const currentHash = window.location.hash.substring(1);
-                if (!['easyJapanese', 'english'].includes(currentHash)) {
-                     langSelect.value = 'home'; // 'home' is the value for "日本語"
+            
+            const hash = window.location.hash.substring(1);
+            let initialPage = 'home';
+            // 言語指定がない場合や、不正な形式の場合はデフォルトで日本語('ja')
+            let initialLang = 'ja'; 
+
+            if (hash) {
+                const parts = hash.split(':'); 
+                initialPage = parts[0] || 'home';
+                if (parts.length > 1 && ['ja', 'easyJa', 'en'].includes(parts[1])) {
+                    initialLang = parts[1];
                 }
             }
+            
+            currentLanguage = initialLang;
+            document.getElementById('language-select').value = currentLanguage;
+            
+            navigateTo(initialPage); 
+            translateUI(); 
         }
         document.addEventListener('DOMContentLoaded', initializePage);
     </script>
