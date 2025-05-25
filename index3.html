@@ -110,6 +110,22 @@
         .contact-list a {
             @apply text-orange-600 hover:underline;
         }
+        /* SNS共有ボタンのスタイル */
+        .share-buttons-container {
+            @apply mt-10 pt-6 border-t border-gray-300 text-center;
+        }
+        .share-button {
+            @apply inline-flex items-center justify-center w-12 h-12 bg-gray-200 text-gray-700 rounded-full mx-2 transition-colors duration-300;
+        }
+        .share-button:hover {
+            @apply bg-gray-300;
+        }
+        .share-button i {
+            @apply text-xl;
+        }
+        .share-button.twitter:hover { background-color: #1DA1F2; color: white; }
+        .share-button.facebook:hover { background-color: #1877F2; color: white; }
+        .share-button.line:hover { background-color: #00B900; color: white; }
 
 
         /* --- High Contrast Mode Styles --- */
@@ -128,7 +144,7 @@
         }
         body.high-contrast-mode a,
         body.high-contrast-mode .nav-link,
-        body.high-contrast-mode .contact-list a { /* 連絡先リストのリンクも対象に */
+        body.high-contrast-mode .contact-list a { 
             color: #ffff00 !important;
         }
         body.high-contrast-mode .nav-link:hover,
@@ -153,7 +169,7 @@
          body.high-contrast-mode .text-gray-800,
          body.high-contrast-mode .text-gray-600,
          body.high-contrast-mode .text-gray-500,
-         body.high-contrast-mode .contact-list strong { /* 連絡先リストの太字も調整 */
+         body.high-contrast-mode .contact-list strong { 
             color: #dddddd !important;
          }
         body.high-contrast-mode .card,
@@ -163,14 +179,14 @@
         body.high-contrast-mode .bg-yellow-50,
         body.high-contrast-mode .bg-teal-50,
         body.high-contrast-mode .event-item-ai,
-        body.high-contrast-mode .contact-list li /* 連絡先リストの背景 */
+        body.high-contrast-mode .contact-list li
          {
             background-color: #1a1a1a !important;
             border: 1px solid #ffff00 !important;
             color: #ffffff !important;
         }
          body.high-contrast-mode .contact-list li {
-            border-color: #444444 !important; /* 区切り線の色調整 */
+            border-color: #444444 !important; 
          }
         body.high-contrast-mode .button-primary {
             background-color: #ffff00 !important;
@@ -216,7 +232,7 @@
         body.high-contrast-mode #saitama-trivia-loading,
         body.high-contrast-mode #ai-events-loading,
         body.high-contrast-mode #ai-advice-loading,
-        body.high-contrast-mode #loading-questions { /* Firestore Q&A用ローディング */
+        body.high-contrast-mode #loading-questions { 
             color: #cccccc !important;
         }
         body.high-contrast-mode .text-white {
@@ -231,6 +247,19 @@
         body.high-contrast-mode #accessibility-panel .text-gray-600 {
             color: #ffffff !important;
         }
+        body.high-contrast-mode .share-buttons-container {
+            border-top-color: #ffff00;
+        }
+        body.high-contrast-mode .share-button {
+            background-color: #222222 !important;
+            color: #ffff00 !important;
+            border: 1px solid #ffff00;
+        }
+        body.high-contrast-mode .share-button:hover {
+             background-color: #ffff00 !important;
+             color: #000000 !important;
+        }
+
     </style>
 </head>
 <body class="text-gray-800 leading-relaxed">
@@ -371,6 +400,8 @@
             // Events Page
             eventsAiButton: { ja: "AIに今月のイベント情報を尋ねる", easyJa: "AIに こんげつ の いべんと を きく", en: "Ask AI for This Month's Events" },
             eventsSearchButton: { ja: "イベントを検索", easyJa: "いべんと を さがす", en: "Search Events" },
+            // Share buttons
+            sharePageTitle: { ja: "このページを共有", easyJa: "このぺーじ を みんな に おしえる", en: "Share this page" },
         };
 
         function translateUI() {
@@ -394,6 +425,12 @@
             if(footerPrivacyLink) footerPrivacyLink.textContent = uiTexts.footerPrivacy[currentLanguage];
             const footerTermsLink = document.getElementById('footer-terms-link');
             if(footerTermsLink) footerTermsLink.textContent = uiTexts.footerTerms[currentLanguage];
+
+            // 共有ボタンのタイトルも翻訳
+            const shareTitle = document.getElementById('share-page-title-text');
+            if (shareTitle) {
+                shareTitle.textContent = uiTexts.sharePageTitle[currentLanguage] || uiTexts.sharePageTitle.ja;
+            }
         }
 
 
@@ -424,6 +461,7 @@
                             <div class="card text-center"><i class="fas fa-calendar-alt icon-style"></i><h2 class="text-subtitle">地域のイベント</h2><p class="text-gray-600 mb-4">埼玉県内のイベントや講座情報。</p><a href="#events" data-page="events" class="button-secondary">詳しく見る</a></div>
                         </div>
                         <div class="card bg-orange-50"><h2 class="text-subtitle text-orange-700">お知らせ</h2><ul class="list-disc list-inside text-left text-gray-700 space-y-2"><li><span class="font-semibold">[2025/05/24]</span> 彩の国やすらぎウェブがオープンしました！</li></ul></div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 easyJa: `
@@ -450,6 +488,7 @@
                             <div class="card text-center"><i class="fas fa-calendar-alt icon-style"></i><h2 class="text-subtitle">ちいきの いべんと</h2><p class="text-gray-600 mb-4">さいたまけん の いべんと や こうざ の じょうほう。</p><a href="#events" data-page="events" class="button-secondary">くわしく みる</a></div>
                         </div>
                         <div class="card bg-orange-50"><h2 class="text-subtitle text-orange-700">おしらせ</h2><ul class="list-disc list-inside text-left text-gray-700 space-y-2"><li><span class="font-semibold">[2025/05/24]</span> さいのくに やすらぎ うぇぶ が おーぷん しました！</li></ul></div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 en: `
@@ -476,6 +515,7 @@
                             <div class="card text-center"><i class="fas fa-calendar-alt icon-style"></i><h2 class="text-subtitle">Local Events</h2><p class="text-gray-600 mb-4">Information on events and courses in Saitama.</p><a href="#events" data-page="events" class="button-secondary">Learn More</a></div>
                         </div>
                         <div class="card bg-orange-50"><h2 class="text-subtitle text-orange-700">Announcements</h2><ul class="list-disc list-inside text-left text-gray-700 space-y-2"><li><span class="font-semibold">[2025/05/24]</span> Saitama Yasuragi Web is now open!</li></ul></div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `
             },
@@ -489,6 +529,7 @@
                             <a href="https://www.z-z.jp/?saitama012" target="_blank" rel="noopener noreferrer" class="button-primary inline-flex items-center"><i class="fas fa-external-link-alt mr-2"></i>彩の国やすらぎ広場 掲示板へ</a>
                             <p class="text-sm text-gray-600 mt-4">（外部サイト「Z-Z BOARD」を利用しています。ご利用の際は、リンク先の利用規約等をご確認ください。）</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 easyJa: `
@@ -500,6 +541,7 @@
                             <a href="https://www.z-z.jp/?saitama012" target="_blank" rel="noopener noreferrer" class="button-primary inline-flex items-center"><i class="fas fa-external-link-alt mr-2"></i>さいのくに やすらぎ ひろば けいじばん へ</a>
                             <p class="text-sm text-gray-600 mt-4">（そと の さいと「Z-Z BOARD」を つかいます。つかう とき は、りんくさき の りようきやく など を みて ください。）</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 en: `
@@ -511,6 +553,7 @@
                             <a href="https://www.z-z.jp/?saitama012" target="_blank" rel="noopener noreferrer" class="button-primary inline-flex items-center"><i class="fas fa-external-link-alt mr-2"></i>To Saitama Yasuragi Plaza Forum</a>
                             <p class="text-sm text-gray-600 mt-4">(Uses the external site "Z-Z BOARD". Please check the terms of use of the linked site before using.)</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `
             },
@@ -530,6 +573,7 @@
                             </div>
                             <div id="support-info-area" class="mt-8 p-6 bg-orange-50 rounded-lg hidden"></div>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 easyJa: `
@@ -547,6 +591,7 @@
                             </div>
                             <div id="support-info-area" class="mt-8 p-6 bg-orange-50 rounded-lg hidden"></div>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 en: `
@@ -564,6 +609,7 @@
                             </div>
                             <div id="support-info-area" class="mt-8 p-6 bg-orange-50 rounded-lg hidden"></div>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `
             },
@@ -574,6 +620,7 @@
                         <div class="mb-10 card"><h2 class="text-subtitle">AIによる今月のイベント提案 ✨</h2><button id="get-ai-events-btn" class="button-ai w-full sm:w-auto">${uiTexts.eventsAiButton.ja}</button><div id="ai-events-area" class="mt-6 hidden min-h-[10rem]"><p id="ai-events-loading" class="text-gray-500">AIがイベント情報を探しています...</p><div id="ai-events-content-list"></div><p class="text-xs text-gray-500 mt-4">※AIによる提案であり、情報が最新でない場合や変更されている場合があります。詳細は必ず公式サイト等でご確認ください。</p></div></div>
                         <div class="mb-8"><h2 class="text-subtitle">イベントを手動で探す</h2><div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6"><input type="text" placeholder="キーワードで検索 (例: 祭り)" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 col-span-full md:col-span-2"><select class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"><option>カテゴリ選択</option></select><input type="date" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></div><button class="button-primary" onclick="showModal('検索機能','この検索機能は現在開発中です。')">${uiTexts.eventsSearchButton.ja}</button></div>
                         <div><h2 class="text-subtitle">主な年間イベント (参考)</h2><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="card"><img src="https://placehold.co/600x400/FFDAB9/4A2311?text=川越まつり" alt="川越まつりのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">川越まつり</h3><p class="text-sm text-gray-500">10月</p></div><div class="card"><img src="https://placehold.co/600x400/A0E6C4/2B4A3C?text=鉄道博物館イベント" alt="鉄道博物館イベントのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">鉄道博物館 イベント</h3><p class="text-sm text-gray-500">随時</p></div><div class="card"><img src="https://placehold.co/600x400/F0E68C/4A2311?text=秩父夜祭" alt="秩父夜祭のイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">秩父夜祭</h3><p class="text-sm text-gray-500">12月</p></div></div></div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 easyJa: `
@@ -582,6 +629,7 @@
                         <div class="mb-10 card"><h2 class="text-subtitle">AIが おしえる こんげつ の いべんと ✨</h2><button id="get-ai-events-btn" class="button-ai w-full sm:w-auto">${uiTexts.eventsAiButton.easyJa}</button><div id="ai-events-area" class="mt-6 hidden min-h-[10rem]"><p id="ai-events-loading" class="text-gray-500">AIが いべんと を さがしています...</p><div id="ai-events-content-list"></div><p class="text-xs text-gray-500 mt-4">※AIが つくった じょうほう です。あたらしいか どうか、かわっている かもしれません。くわしくは かならず こうしきさいと など で しらべてください。</p></div></div>
                         <div class="mb-8"><h2 class="text-subtitle">いべんと を じぶん で さがす</h2><div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6"><input type="text" placeholder="ことば で さがす (れい: まつり)" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 col-span-full md:col-span-2"><select class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"><option>かてごり を えらぶ</option></select><input type="date" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></div><button class="button-primary" onclick="showModal('検索機能','この検索機能は現在開発中です。')">${uiTexts.eventsSearchButton.easyJa}</button></div>
                         <div><h2 class="text-subtitle">おもな ねんかん いべんと (さんこう)</h2><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="card"><img src="https://placehold.co/600x400/FFDAB9/4A2311?text=川越まつり" alt="川越まつりのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">かわごえ まつり</h3><p class="text-sm text-gray-500">10がつ</p></div><div class="card"><img src="https://placehold.co/600x400/A0E6C4/2B4A3C?text=鉄道博物館イベント" alt="鉄道博物館イベントのイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">てつどうはくぶつかん いべんと</h3><p class="text-sm text-gray-500">いつでも</p></div><div class="card"><img src="https://placehold.co/600x400/F0E68C/4A2311?text=秩父夜祭" alt="秩父夜祭のイメージ" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">ちちぶ よまつり</h3><p class="text-sm text-gray-500">12がつ</p></div></div></div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 en: `
@@ -590,18 +638,19 @@
                         <div class="mb-10 card"><h2 class="text-subtitle">AI's Event Suggestions for This Month ✨</h2><button id="get-ai-events-btn" class="button-ai w-full sm:w-auto">${uiTexts.eventsAiButton.en}</button><div id="ai-events-area" class="mt-6 hidden min-h-[10rem]"><p id="ai-events-loading" class="text-gray-500">AI is searching for event information...</p><div id="ai-events-content-list"></div><p class="text-xs text-gray-500 mt-4">*Suggestions by AI. Information may not be up-to-date or may have changed. Please be sure to check official websites for details.</p></div></div>
                         <div class="mb-8"><h2 class="text-subtitle">Search Events Manually</h2><div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6"><input type="text" placeholder="Search by keyword (e.g., festival)" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 col-span-full md:col-span-2"><select class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"><option>Select Category</option></select><input type="date" class="p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></div><button class="button-primary" onclick="showModal('Search Function','This search function is currently under development.')">${uiTexts.eventsSearchButton.en}</button></div>
                         <div><h2 class="text-subtitle">Major Annual Events (Reference)</h2><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="card"><img src="https://placehold.co/600x400/FFDAB9/4A2311?text=Kawagoe%20Festival" alt="Image of Kawagoe Festival" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">Kawagoe Festival</h3><p class="text-sm text-gray-500">October</p></div><div class="card"><img src="https://placehold.co/600x400/A0E6C4/2B4A3C?text=Railway%20Museum%20Event" alt="Image of Railway Museum Event" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">Railway Museum Event</h3><p class="text-sm text-gray-500">Anytime</p></div><div class="card"><img src="https://placehold.co/600x400/F0E68C/4A2311?text=Chichibu%20Night%20Festival" alt="Image of Chichibu Night Festival" class="w-full h-48 object-cover rounded-t-lg mb-4"><h3 class="font-semibold text-xl">Chichibu Night Festival</h3><p class="text-sm text-gray-500">December</p></div></div></div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `
             },
             about: { // このサイトについて
                 ja: `
-                    <section id="about"><h1 class="text-title">このサイトについて</h1><div class="card"><p class="text-lg text-gray-700">「彩の国やすらぎウェブ」は、埼玉県民のための情報交換と支援のプラットフォームです。皆さまの生活がより豊かで安心できるものになるよう、様々な情報や機能を提供してまいります。</p></div></section>
+                    <section id="about"><h1 class="text-title">このサイトについて</h1><div class="card"><p class="text-lg text-gray-700">「彩の国やすらぎウェブ」は、埼玉県民のための情報交換と支援のプラットフォームです。皆さまの生活がより豊かで安心できるものになるよう、様々な情報や機能を提供してまいります。</p></div><div id="share-buttons-section"></div></section>
                 `,
                 easyJa: `
-                    <section id="about"><h1 class="text-title">このさいと について</h1><div class="card"><p class="text-lg text-gray-700">「さいのくに やすらぎ うぇぶ」は、さいたまけん に すむ ひと の ための、じょうほうこうかん や しえん の ばしょ です。みんな の せいかつ が もっと よくなり、あんしん できるように、いろいろな じょうほう や きのう を つくっていきます。</p></div></section>
+                    <section id="about"><h1 class="text-title">このさいと について</h1><div class="card"><p class="text-lg text-gray-700">「さいのくに やすらぎ うぇぶ」は、さいたまけん に すむ ひと の ための、じょうほうこうかん や しえん の ばしょ です。みんな の せいかつ が もっと よくなり、あんしん できるように、いろいろな じょうほう や きのう を つくっていきます。</p></div><div id="share-buttons-section"></div></section>
                 `,
                 en: `
-                    <section id="about"><h1 class="text-title">About This Site</h1><div class="card"><p class="text-lg text-gray-700">"Saitama Yasuragi Web" is an information exchange and support platform for the residents of Saitama Prefecture. We will continue to provide various information and functions to make everyone's life richer and more secure.</p></div></section>
+                    <section id="about"><h1 class="text-title">About This Site</h1><div class="card"><p class="text-lg text-gray-700">"Saitama Yasuragi Web" is an information exchange and support platform for the residents of Saitama Prefecture. We will continue to provide various information and functions to make everyone's life richer and more secure.</p></div><div id="share-buttons-section"></div></section>
                 `
             },
             privacy: { // プライバシーポリシー
@@ -621,6 +670,7 @@
                             <p>連絡先： masa_mm@ymail.ne.jp</p>
                             <br><p>以上</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 easyJa: `
@@ -639,6 +689,7 @@
                             <p>れんらくさき： masa_mm@ymail.ne.jp</p>
                             <br><p>いじょう</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 en: `
@@ -657,6 +708,7 @@
                             <p>Contact: masa_mm@ymail.ne.jp</p>
                             <br><p>End</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `
             },
@@ -676,6 +728,7 @@
                             <p>連絡先： masa_mm@ymail.ne.jp</p>
                             <br><p>以上</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 easyJa: `
@@ -693,6 +746,7 @@
                             <p>れんらくさき： masa_mm@ymail.ne.jp</p>
                             <br><p>いじょう</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `,
                 en: `
@@ -710,6 +764,7 @@
                             <p>Contact: masa_mm@ymail.ne.jp</p>
                             <br><p>End</p>
                         </div>
+                        <div id="share-buttons-section"></div>
                     </section>
                 `
             }
@@ -734,7 +789,7 @@
 
         // --- Navigation Logic ---
         function navigateTo(pageKey) {
-            currentPageKey = pageKey; // 現在のページキーを更新
+            currentPageKey = pageKey; 
             
             const contentData = pageContents[pageKey]?.[currentLanguage] || pageContents[pageKey]?.['ja'] || `<p class="text-center text-red-500">このページの${currentLanguage === 'easyJa' ? 'やさしい日本語' : currentLanguage === 'en' ? '英語' : '日本語'}版コンテンツは見つかりませんでした。</p>`;
             
@@ -757,19 +812,19 @@
                 if (supportInfoArea) supportInfoArea.classList.add('hidden');
             }
             translateUI(); 
+            addShareButtons(); // 各ページ描画後に共有ボタンを追加
         }
 
 
-        navLinks.forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); const page = e.target.closest('a').dataset.page; navigateTo(page); window.location.hash = page; }));
-        document.querySelectorAll('footer a[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); const page = e.target.dataset.page; navigateTo(page); window.location.hash = page; }));
+        navLinks.forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); const page = e.target.closest('a').dataset.page; navigateTo(page); window.location.hash = `${page}:${currentLanguage}`; }));
+        document.querySelectorAll('footer a[data-page]').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); const page = e.target.dataset.page; navigateTo(page); window.location.hash = `${page}:${currentLanguage}`; }));
         mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
         accessibilityToggle.addEventListener('click', () => accessibilityPanel.classList.add('open'));
         closeAccessibilityPanel.addEventListener('click', () => accessibilityPanel.classList.remove('open'));
         fontSizeSlider.addEventListener('input', (e) => { document.documentElement.style.fontSize = e.target.value + '%'; fontSizeValue.textContent = `文字サイズ (${e.target.value}%)`; });
         
         languageSelect.addEventListener('change', (e) => {
-            currentLanguage = e.target.value; // 'ja', 'easyJa', 'en' のいずれか
-            // URLハッシュに言語情報を追加または更新: #pageKey:lang
+            currentLanguage = e.target.value; 
             window.location.hash = `${currentPageKey}:${currentLanguage}`; 
             navigateTo(currentPageKey); 
         });
@@ -794,19 +849,28 @@
             if (!infoArea) return;
 
             let titleText, descriptionText, contactListTitleText, aiButtonText;
+            let categoryDisplayName = categoryName; // デフォルトは渡された名前
+
+            // uiTextsから翻訳されたカテゴリ名を取得
+            const categoryTranslations = uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)];
+            if (categoryTranslations && categoryTranslations[currentLanguage]) {
+                categoryDisplayName = categoryTranslations[currentLanguage];
+            }
+
+
             if (currentLanguage === 'easyJa') {
-                titleText = `${uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)]?.easyJa || categoryName} の なやみ`;
-                descriptionText = `さいたまけん では、「${uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)]?.easyJa || categoryName}」に かんする いろいろな じょうほう や さーびす が あります。`;
+                titleText = `${categoryDisplayName} の なやみ`;
+                descriptionText = `さいたまけん では、「${categoryDisplayName}」に かんする いろいろな じょうほう や さーびす が あります。`;
                 contactListTitleText = "れんらくさき の れい:";
                 aiButtonText = "AIに いっぱんてきな あどばいす を もらう ✨";
             } else if (currentLanguage === 'en') {
-                titleText = `Concerns about ${uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)]?.en || categoryName}`;
-                descriptionText = `In Saitama Prefecture, there are various information and services to support those with concerns about "${uiTexts['supportCategory' + categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)]?.en || categoryName}".`;
+                titleText = `Concerns about ${categoryDisplayName}`;
+                descriptionText = `In Saitama Prefecture, there are various information and services to support those with concerns about "${categoryDisplayName}".`;
                 contactListTitleText = "Example Contacts:";
                 aiButtonText = "Get General Advice from AI ✨";
             } else { // default to Japanese
-                titleText = `${categoryName}の悩み`;
-                descriptionText = `埼玉県では、「${categoryName}」に関する様々な情報やサービスがあります。お近くの市町村の窓口や、以下の連絡先にご相談ください。`;
+                titleText = `${categoryDisplayName}の悩み`;
+                descriptionText = `埼玉県では、「${categoryDisplayName}」に関する様々な情報やサービスがあります。お近くの市町村の窓口や、以下の連絡先にご相談ください。`;
                 contactListTitleText = "連絡先の例:";
                 aiButtonText = "AIに一般的なアドバイスをもらう ✨";
             }
@@ -814,7 +878,6 @@
             let staticContent = `<h3 class="text-xl font-semibold text-orange-700 mb-3">${titleText}</h3><p class="mb-2">${descriptionText}</p>`;
             let contactInfo = `<h4 class="text-lg font-semibold text-gray-700 mt-4 mb-2">${contactListTitleText}</h4><ul class="contact-list space-y-2">`;
 
-            // 連絡先情報は日本語のままですが、将来的にはこれも翻訳対象
             switch(categoryKey) {
                 case 'childcare': 
                     contactInfo += `
@@ -845,7 +908,7 @@
                 contactInfo += `<p class="text-sm text-gray-500 mt-3">（${currentLanguage === 'easyJa' ? 'くわしい れんらくさき は、にほんご で かいてあります。' : 'Detailed contact information is currently available in Japanese only.'}）</p>`;
             }
 
-            infoArea.innerHTML = `${staticContent} ${contactInfo} <button id="get-ai-advice-btn" class="button-ai mt-6" onclick="window.getAiAdvice('${categoryKey}', '${categoryName}')">${aiButtonText}</button><div id="ai-advice-area" class="mt-4 p-4 bg-teal-50 rounded-lg border border-teal-200 hidden min-h-[8rem]"><p id="ai-advice-loading" class="text-gray-500">AIからのアドバイスを生成中です...</p><p id="ai-advice-content"></p></div>`;
+            infoArea.innerHTML = `${staticContent} ${contactInfo} <button id="get-ai-advice-btn" class="button-ai mt-6" onclick="window.getAiAdvice('${categoryKey}', '${categoryDisplayName}')">${aiButtonText}</button><div id="ai-advice-area" class="mt-4 p-4 bg-teal-50 rounded-lg border border-teal-200 hidden min-h-[8rem]"><p id="ai-advice-loading" class="text-gray-500">AIからのアドバイスを生成中です...</p><p id="ai-advice-content"></p></div>`;
             infoArea.classList.remove('hidden');
         }
         window.getAiAdvice = async function(categoryKey, categoryName) {
@@ -888,7 +951,7 @@
         function initializeEventsPage() {
             const getAiEventsBtn = document.getElementById('get-ai-events-btn');
             if (getAiEventsBtn) {
-                 getAiEventsBtn.textContent = uiTexts.eventsAiButton[currentLanguage] || uiTexts.eventsAiButton.ja; // ボタンテキストも翻訳
+                 getAiEventsBtn.textContent = uiTexts.eventsAiButton[currentLanguage] || uiTexts.eventsAiButton.ja; 
                  getAiEventsBtn.addEventListener('click', getAiEventSuggestions);
             } else console.warn("'get-ai-events-btn' not found on events page init.");
             
@@ -909,7 +972,7 @@
             if (currentLanguage === 'en') aiButtonThinkingText = '<i class="fas fa-spinner fa-spin mr-2"></i>AI is searching...';
             aiButton.innerHTML = aiButtonThinkingText;
 
-            const currentMonth = new Date().toLocaleString(currentLanguage === 'en' ? 'en-US' : 'ja-JP', { month: 'long' }); // 言語に応じた月の名前
+            const currentMonth = new Date().toLocaleString(currentLanguage === 'en' ? 'en-US' : 'ja-JP', { month: 'long' }); 
             const prompt = `あなたは埼玉県の地域イベントに詳しいAIアシスタントです。埼玉県の「今月 (${currentMonth})」開催予定の主要な地域イベントを3つ提案してください。各イベントについて、イベント名、簡単な説明（100字以内）、開催期間や主な開催日、開催場所（市町村名など）を教えてください。情報は箇条書きで、各項目が分かりやすいように提示してください。回答言語は${currentLanguage === 'easyJa' ? 'やさしい日本語' : currentLanguage === 'en' ? '英語' : '日本語'}でお願いします。`;
             try {
                 let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; 
@@ -965,7 +1028,7 @@
                     e.preventDefault();
                     const pageName = button.dataset.page;
                     navigateTo(pageName);
-                    window.location.hash = pageName;
+                    window.location.hash = `${pageName}:${currentLanguage}`;
                 });
             });
             const heroSupportButton = document.getElementById('hero-support-link');
@@ -974,7 +1037,7 @@
                     e.preventDefault();
                     const pageName = heroSupportButton.dataset.page;
                     navigateTo(pageName);
-                    window.location.hash = pageName;
+                    window.location.hash = `${pageName}:${currentLanguage}`;
                 });
             }
         }
@@ -1021,6 +1084,38 @@
             }
         }
 
+        // --- Share Button Logic ---
+        function addShareButtons() {
+            const shareButtonsContainer = document.getElementById('share-buttons-section');
+            if (!shareButtonsContainer) return;
+
+            const pageUrl = encodeURIComponent(window.location.href);
+            // ページのタイトルを現在の言語で取得 (より動的に)
+            let pageTitleText = uiTexts.siteTitle[currentLanguage] || "彩の国やすらぎウェブ"; // デフォルトタイトル
+            const currentPageTitleElement = document.querySelector('#main-content h1.text-title');
+            if (currentPageTitleElement && currentPageTitleElement.textContent.trim() !== "") {
+                 pageTitleText = currentPageTitleElement.textContent.trim();
+            }
+            const pageTitle = encodeURIComponent(pageTitleText);
+
+
+            shareButtonsContainer.innerHTML = `
+                <div class="share-buttons-container">
+                    <h3 class="text-lg font-semibold mb-3 text-gray-700" id="share-page-title-text">${uiTexts.sharePageTitle[currentLanguage] || uiTexts.sharePageTitle.ja}</h3>
+                    <a href="https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}" target="_blank" rel="noopener noreferrer" class="share-button twitter" aria-label="Xで共有">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" rel="noopener noreferrer" class="share-button facebook" aria-label="Facebookで共有">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://social-plugins.line.me/lineit/share?url=${pageUrl}&text=${pageTitle}" target="_blank" rel="noopener noreferrer" class="share-button line" aria-label="LINEで共有">
+                        <i class="fab fa-line"></i>
+                    </a>
+                </div>
+            `;
+        }
+
+
         // --- Initialization ---
         async function initializePage() {
             document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -1028,7 +1123,6 @@
             
             const hash = window.location.hash.substring(1);
             let initialPage = 'home';
-            // 言語指定がない場合や、不正な形式の場合はデフォルトで日本語('ja')
             let initialLang = 'ja'; 
 
             if (hash) {
