@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>埼玉県AI犯罪予測（デモ）</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+        #map {
+            height: 100%; /* Changed from 80vh to take remaining space */
+            width: 100%;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+       .controls {
+            padding: 10px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+       .controls label {
+            margin-right: 5px;
+        }
+       .controls select,.controls input {
+            padding: 5px;
+            margin-right: 15px;
+        }
+       .info-panel {
+            padding: 15px;
+            background-color: white;
+            border-top: 1px solid #ddd;
+        }
+       .info-panel h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+       .info-panel p {
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.6;
+        }
+       .info-panel strong {
+            color: #d9534f;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            font-size: 0.8em;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+           .controls {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+           .controls select,.controls input,.controls button {
+                width: calc(100% - 20px); /* Adjust width for padding */
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+            header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>埼玉県AI犯罪予測マップ（デモンストレーション）</h1>
+    </header>
+
+    <div class="controls">
+        <label for="crimeType">犯罪種別:</label>
+        <select id="crimeType" name="crimeType">
+            <option value="all">すべて</option>
+            <option value="theft_bicycle">自転車盗</option>
+            <option value="theft_vehicle_parts">車上ねらい</option>
+            <option value="snatching">ひったくり</option>
+        </select>
+
+        <label for="timePeriod">時間帯:</label>
+        <select id="timePeriod" name="timePeriod">
+            <option value="all_day">終日</option>
+            <option value="daytime">昼間 (6:00-18:00)</option>
+            <option value="nighttime">夜間 (18:00-6:00)</option>
+        </select>
+         <button onclick="updateMap()">表示更新</button>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="info-panel">
+        <h2>情報パネル</h2>
+        <p>このマップは、AIによる犯罪予測のデモンストレーションです。選択した条件に基づいて、予測される犯罪リスクがヒートマップで表示されます。</p>
+        <p><strong>注意：</strong>これは<strong>実際のリアルタイムデータや確定的な予測を示すものではありません。</strong>教育およびデモンストレーション目的で作成されたものであり、表示される情報は<strong>サンプルデータに基づいています。</strong>実際の防犯対策は、警察からの公式情報に基づいて行ってください。</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 埼玉県AI犯罪予測プロジェクト (デモ)</p>
+    </footer>
+
+    <script>
+        // 埼玉県の中心座標
+        var saitamaCenter = [35.95, 139.5]; // 埼玉県のおおよその中心
+
+        // マップの初期化
+        var map = L.map('map').setView(saitamaCenter, 10);
+
+        // タイルレイヤーの追加 (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // サンプルヒートマップデータ (緯度, 経度, 強度)
+        // 実際のアプリケーションでは、AIモデルからの予測結果を使用します。
+        var heatData = {
+            "all": [35.8617, 139.6455, 0.8], // さいたま市浦和区周辺
+                [35.9062, 139.6298, 0.7], // さいたま市大宮区周辺
+                [35.9248, 139.4880, 0.6], // 川越市周辺
+                [36.1422, 139.3840, 0.5], // 熊谷市周辺
+                [35.7987, 139.4720, 0.4], // 所沢市周辺
+                [35.8589, 139.7700, 0.7], // 草加市周辺
+                [35.9900, 139.0850, 0.3], // 秩父市周辺
+                // より多くのランダムな点を追加
+                [35.88, 139.60, Math.random()], [35.95, 139.65, Math.random()],
+                [35.80, 139.50, Math.random()], [36.00, 139.40, Math.random()],
+                [36.10, 139.30, Math.random()], [35.75, 139.70, Math.random()],
+                [35.93, 139.55, Math.random()], [35.82, 139.68, Math.random()],
+                [36.05, 139.25, Math.random()], [35.70, 139.45, Math.random()],
+                [35.89, 139.72, Math.random()], [35.98, 139.50, Math.random()],
+                [35.81, 139.35, Math.random()], [36.15, 139.58, Math.random()],
+                [35.77, 139.63, Math.random()], [35.91, 139.39, Math.random()],
+                [36.02, 139.69, Math.random()], [35.84, 139.29, Math.random()],
+                [35.96, 139.75, Math.random()], [35.72, 139.52, Math.random()],
+            "theft_bicycle": [ // 自転車盗のサンプルデータ
+                [35.86, 139.64, 0.9], [35.90, 139.63, 0.8], [35.92, 139.48, 0.7],
+                [35.85, 139.77, 0.6], [35.79, 139.47, 0.5],
+                [35.88, 139.61, Math.random()*0.5 + 0.3], [35.93, 139.66, Math.random()*0.5 + 0.3],
+                [35.81, 139.51, Math.random()*0.5 + 0.3], [36.01, 139.41, Math.random()*0.5 + 0.3],
+            "theft_vehicle_parts": [ // 車上ねらいのサンプルデータ
+                [36.14, 139.38, 0.8], [35.99, 139.08, 0.7], [35.86, 139.65, 0.6],
+                [35.90, 139.62, 0.5],
+                [36.10, 139.31, Math.random()*0.4 + 0.2], [35.75, 139.71, Math.random()*0.4 + 0.2],
+                [35.94, 139.56, Math.random()*0.4 + 0.2], [35.83, 139.69, Math.random()*0.4 + 0.2],
+            "snatching": [ // ひったくりのサンプルデータ
+                [35.80, 139.50, 0.6], [35.95, 139.65, 0.5], [35.70, 139.45, 0.4],
+                [36.05, 139.25, Math.random()*0.3 + 0.1], [35.89, 139.73, Math.random()*0.3 + 0.1]
+        };
+
+        var heatLayer = L.heatLayer(heatData["all"], {
+            radius: 25, // 各ポイントの影響範囲（ピクセル単位） [1]
+            blur: 15, // ぼかしの量 [1]
+            maxZoom: 17, // 最大ズームレベルでの強度 [1]
+            gradient: {0.4: 'blue', 0.65: 'lime', 1: 'red'} // 色のグラデーション [1, 2]
+        }).addTo(map);
+
+        function updateMap() {
+            var crimeType = document.getElementById('crimeType').value;
+            var selectedData = heatData |
+| heatData["all"]; // 選択された犯罪種別のデータ、なければ全データ
+
+            // 既存のヒートマップレイヤーを削除
+            if (heatLayer) {
+                map.removeLayer(heatLayer);
+            }
+
+            // 新しいデータでヒートマップレイヤーを再作成して追加
+            // 時間帯フィルタは現在ダミーです。実際のデータとロジックで調整が必要です。
+            // 例えば、selectedDataを時間帯に応じてフィルタリングする処理をここに追加します。
+            heatLayer = L.heatLayer(selectedData, {
+                radius: 25,
+                blur: 15,
+                maxZoom: 17,
+                gradient: {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+            }).addTo(map);
+
+            // alert("マップが更新されました（時間帯フィルタは現在ダミー機能です）。");
+        }
+
+        // 初期表示
+        updateMap();
+
+    </script>
+</body>
+</html>
